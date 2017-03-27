@@ -1,5 +1,5 @@
 Upgrade guide
-- getType() no longer exists. Types are on the action
+- getType() is deprecated. Types are on the action
 - async middleware options -> requestOptions
 - async middleware id -> actionType
 - parse() -> parseSuccess()
