@@ -4,26 +4,35 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register './src/**/*.test.js'",
-    "test-watch": "npm run test -- --watch",
+    "test": "npm run lint && npm run mocha",
+    "mocha": "mocha --compilers js:babel-register",
+    "mocha-watch": "npm run mocha -- --watch",
     "lint": "eslint .",
     "lint-file": "eslint",
     "fix-lint": "eslint . --fix",
     "clean": "rm -rf dist",
     "babel": "babel src --out-dir dist --ignore *.test.js",
-    "build": "npm run clean && npm run babel"
+    "build": "npm run clean && npm run babel",
+    "dev-docs": "documentation serve src/index.js --watch"
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "flux-standard-action": "^1.2.0",
+    "lodash": "^4.17.4"    
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.2.2",
     "babel-register": "^6.24.0",
+    "documentation": "^4.0.0-beta.18",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.1",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-mocha": "^4.9.0",
     "mocha": "^3.2.0"
   }
 }
