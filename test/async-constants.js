@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import { isAsyncConstant } from '../src/async-constants';
+import { isValidAsyncConstant } from '../src/async-constants';
 
-describe('isAsyncConstant()', () => {
+describe('isValidAsyncConstant()', () => {
   let asyncConst =
   beforeEach(() => {
     asyncConst = {
@@ -12,17 +12,17 @@ describe('isAsyncConstant()', () => {
     };
   });
   it('identifies an async constant', () => {
-    assert.isTrue(isAsyncConstant(asyncConst));
+    assert.isTrue(isValidAsyncConstant(asyncConst));
   });
   it('returns false for invalid types', () => {
-    assert.isFalse(isAsyncConstant(true));
-    assert.isFalse(isAsyncConstant(''));
-    assert.isFalse(isAsyncConstant([]));
-    assert.isFalse(isAsyncConstant(1234));
+    assert.isFalse(isValidAsyncConstant(true));
+    assert.isFalse(isValidAsyncConstant(''));
+    assert.isFalse(isValidAsyncConstant([]));
+    assert.isFalse(isValidAsyncConstant(1234));
   });
   it('returns false if missing any of the NAME', () => {
     delete asyncConst.NAME;
-    assert.isFalse(isAsyncConstant(asyncConst));
+    assert.isFalse(isValidAsyncConstant(asyncConst));
   });
 });
 

@@ -11,8 +11,12 @@ import _ from 'lodash';
 /**
  * Creates an action creator function
  * @param  {string} type a string type for the action, e.g. `ADD_TODO`
+ * @param  {function} [payloadReducer] function which returns the payload from the arguments action
+ * @param  {function} [metaReducer] function which returns the meta from the arguments action
+ * is called with.  (Default: `args => args.meta`).
  * @return {actionCreator} an action creator function using the given type
  * @example
+ * // simple example
  * const addTodo = createAction('ADD_TODO');
  * addTodo({
  *   payload: { text: 'Do something' },

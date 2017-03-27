@@ -1,13 +1,7 @@
 import _ from 'lodash';
-import { createAsyncConstants, isAsyncConstant } from './async-constants';
+import { getOrCreateAsyncConstants } from './async-constants';
 import { BASE_TYPE } from './lib/constants';
 import { createAction } from './action';
-
-const getAsyncConstants = (type) => {
-  if (typeof type === 'string' && type.length) return createAsyncConstants(type);
-  else if (isAsyncConstant(type)) return type;
-  return null;
-};
 
 const decorateActionCreator = (actionCreator, asyncConstants) => {
   const { START, SUCCESS, FAIL, NAME } = asyncConstants;
@@ -15,6 +9,7 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
     START,
     SUCCESS,
     FAIL,
+    NAME,
     startFn: createAction(START),
     successFn: createAction(SUCCESS),
     failFn: createAction(FAIL),
@@ -22,12 +17,20 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
   });
 };
 
+
+/**
+ * [description]
+ * @param  {string|object}   type    [description]
+ * @param  {Function} fn      [description]
+ * @param  {Object}   options [description]
+ * @return {function} actionCreator
+ */
 export const createAsyncAction = (type, fn, options = {}) => {
   const {
     baseType = BASE_TYPE,
   } = options;
 
-  const asyncConstants = getAsyncConstants(type);
+  const asyncConstants = getOrCreateAsyncConstants(type);
   if (!asyncConstants) {
     throw new Error('createAsyncAction() requires type to be a string or an object inthe format that createAsyncConstants() returns.');
   }

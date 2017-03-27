@@ -1,17 +1,36 @@
 import _ from 'lodash';
 import { BASE_TYPE } from './lib/constants';
 
-// Function to create a redux middleware to run async actions.
+/**
+ * Creates an instance of middleware necessary to handle dispatched async actions created with
+ * {@link createAsyncAction}.
+ * @param  {object} options middleware options
+ * @param  {string} [options.actionType="REDUX_SIMPLE_ASYNC_BASE_TYPE"] the action type the
+ * middleware will listen for. You most likely don't want to modify this unless for some reason
+ * you want multiple instances of async middleware.
+ * @param {object} [options.requestOptions] options to passed as the second argument to
+ * `makeRequest`
+ * @return {function} redux middleware for handling async actions
+ * @example
+ * import { createAsyncMiddleware } from 'redux-easy-async';
+ * const asyncMiddleware = createAsyncMiddleware();
+ *
+ * ...
+ *
+ * // Now add to your middlewares whereever your store is created.
+ * // Typically this looks something like:
+ * // const middlewares = [asyncMiddleware]
+ */
 export const createAsyncMiddleware = (options) => {
   const {
-    id = BASE_TYPE,
+    actionType = BASE_TYPE,
     requestOptions,
   } = options;
 
   // Return Redux middleware
   return ({ dispatch, getState }) => next => (action) => {
     // Normal action: pass it on
-    if (action.type !== id) return next(action);
+    if (action.type !== actionType) return next(action);
 
     // configuration option defaults
     const {
@@ -32,7 +51,7 @@ export const createAsyncMiddleware = (options) => {
       // This is useful for propagating params down
       parseStart = () => null,
       // on success the result of parse() is passed as the payload of the success action
-      parse = resp => resp,
+      parseSuccess = resp => resp,
       // on fail the result of parseFail() is passed as the payload of the fail action
       parseFail = resp => resp,
     } = action;
@@ -59,7 +78,7 @@ export const createAsyncMiddleware = (options) => {
 
     req.then(
       resp => dispatch(successActionCreator({
-        payload: parse(resp),
+        payload: parseSuccess(resp),
           // pass the response and actionName as part of the meta
         meta: {
           ...meta,

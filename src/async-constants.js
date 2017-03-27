@@ -12,7 +12,7 @@ import _ from 'lodash';
 /**
  * Creates an object with constant keys `NAME`, `START`, `SUCCESS`, `FAIL`
  * in the format that `createAsyncAction` expects
- * @return {asyncConstants}
+ * @return {asyncConstants} returns an object with keys `NAME`, `START`, `SUCCESS`, `FAIL`
  * @param  {string} name the base name for this constant, e.g. `"GET_USER"`
  * @example
  * const GET_USER = createAsyncConstants('GET_USER');
@@ -32,10 +32,16 @@ export const createAsyncConstants = name => ({
 
 const requiredKeys = ['NAME', 'START', 'FAIL', 'SUCCESS'];
 
-export const isAsyncConstant = (obj) => {
-  if (typeof obj !== 'object') return false;
+export const isValidAsyncConstant = (obj) => {
+  if (['object', 'function'].indexOf(typeof obj) === -1) return false;
   return _.every(requiredKeys, (requiredKey) => {
     const objKey = obj[requiredKey];
     return typeof objKey === 'string' && objKey.length > 0;
   });
+};
+
+export const getOrCreateAsyncConstants = (type) => {
+  if (typeof type === 'string' && type.length) return createAsyncConstants(type);
+  else if (isValidAsyncConstant(type)) return type;
+  return null;
 };

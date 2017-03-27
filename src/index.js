@@ -2,6 +2,7 @@
 // const MAIN_TYPE = 'REDUX_SIMPLE_ASYNC_MAIN_TYPE';
 import { createAsyncConstants } from './async-constants';
 import { createAction } from './action';
+import { createAsyncMiddleware } from './middleware';
 
 export default {
   createAsyncConstants,
