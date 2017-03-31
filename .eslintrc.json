@@ -3,9 +3,6 @@
   "plugins": [
     "import"
   ],
-  "env": {
-    "browser": true
-  },
   "rules": {
     "import/prefer-default-export": 0,
     "valid-jsdoc": 2

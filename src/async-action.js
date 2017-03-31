@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import { getOrCreateAsyncConstants } from './async-constants';
-import { BASE_TYPE } from './lib/constants';
+import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
 import { createAction } from './action';
 
 const decorateActionCreator = (actionCreator, asyncConstants) => {
-  const { START, SUCCESS, FAIL, NAME } = asyncConstants;
+  const { START_TYPE, SUCCESS_TYPE, FAIL_TYPE, NAME } = asyncConstants;
   _.assign(actionCreator, {
-    START,
-    SUCCESS,
-    FAIL,
+    START_TYPE,
+    SUCCESS_TYPE,
+    FAIL_TYPE,
     NAME,
-    startFn: createAction(START),
-    successFn: createAction(SUCCESS),
-    failFn: createAction(FAIL),
+    start: createAction(START_TYPE),
+    success: createAction(SUCCESS_TYPE),
+    fail: createAction(FAIL_TYPE),
     actionName: NAME,
   });
 };
@@ -27,7 +27,7 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  */
 export const createAsyncAction = (type, fn, options = {}) => {
   const {
-    baseType = BASE_TYPE,
+    middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,
   } = options;
 
   const asyncConstants = getOrCreateAsyncConstants(type);
@@ -38,12 +38,12 @@ export const createAsyncAction = (type, fn, options = {}) => {
   const actionCreator = (...args) => {
     const action = fn(...args);
     return {
-      type: baseType,
+      type: middlewareMainType,
       ...action,
       actionName: actionCreator.actionName,
-      startActionCreator: actionCreator.startFn,
-      successActionCreator: actionCreator.successFn,
-      failActionCreator: actionCreator.failFn,
+      startActionCreator: actionCreator.start,
+      successActionCreator: actionCreator.success,
+      failActionCreator: actionCreator.fail,
     };
   };
   // attach the name and start, success, and fail actions for convenience

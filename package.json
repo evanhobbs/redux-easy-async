@@ -2,7 +2,7 @@
   "name": "redux-easy-async",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "npm run lint && npm run mocha",
     "mocha": "mocha --compilers js:babel-register",
@@ -11,8 +11,9 @@
     "lint-file": "eslint",
     "fix-lint": "eslint . --fix",
     "clean": "rm -rf dist",
-    "babel": "babel src --out-dir dist --ignore *.test.js",
+    "babel": "babel src --out-dir dist",
     "build": "npm run clean && npm run babel",
+    "dev": "npm run babel -- --watch",
     "dev-docs": "documentation serve src/index.js --watch"
   },
   "author": "",
@@ -26,8 +27,10 @@
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.2.2",
+    "babel-preset-es2015": "^6.24.0",
     "babel-register": "^6.24.0",
     "documentation": "^4.0.0-beta.18",
     "eslint": "^3.18.0",

@@ -6,9 +6,9 @@ describe('isValidAsyncConstant()', () => {
   beforeEach(() => {
     asyncConst = {
       NAME: 'TEST',
-      START: 'START_TEST',
-      FAIL: 'FAIL_TEST',
-      SUCCESS: 'SUCCESS_TEST',
+      START_TYPE: 'START_TEST',
+      FAIL_TYPE: 'FAIL_TEST',
+      SUCCESS_TYPE: 'SUCCESS_TEST',
     };
   });
   it('identifies an async constant', () => {

@@ -10,14 +10,14 @@ const assertState = (state, hasPendingRequests, pendingRequests) => {
 
 export const runSingleReducerTests = (reducer, name) => {
   const INVALID = { type: 'SOME_OTHER_ACTION_TYPE' };
-  let START;
-  let SUCCESS;
-  let FAIL;
+  let START_TYPE;
+  let SUCCESS_TYPE;
+  let FAIL_TYPE;
 
   beforeEach(() => {
-    START = { type: `START_${name}` };
-    SUCCESS = { type: `SUCCESS_${name}` };
-    FAIL = { type: `FAIL_${name}` };
+    START_TYPE = { type: `START_${name}` };
+    SUCCESS_TYPE = { type: `SUCCESS_${name}` };
+    FAIL_TYPE = { type: `FAIL_${name}` };
   });
   it('initial state is no pending requests', () => {
     const state = reducer();
@@ -26,29 +26,29 @@ export const runSingleReducerTests = (reducer, name) => {
   it('start adds to pending requests', () => {
     let state = reducer();
     assertState(state, false, 0);
-    state = reducer(state, START);
+    state = reducer(state, START_TYPE);
     assertState(state, true, 1);
-    state = reducer(state, START);
+    state = reducer(state, START_TYPE);
     assertState(state, true, 2);
   });
   it('success removes pending requests', () => {
     let state = reducer();
-    state = reducer(state, START);
-    state = reducer(state, START);
+    state = reducer(state, START_TYPE);
+    state = reducer(state, START_TYPE);
     assertState(state, true, 2);
-    state = reducer(state, SUCCESS);
+    state = reducer(state, SUCCESS_TYPE);
     assertState(state, true, 1);
-    state = reducer(state, SUCCESS);
+    state = reducer(state, SUCCESS_TYPE);
     assertState(state, false, 0);
   });
   it('fail removes pending requests', () => {
     let state = reducer();
-    state = reducer(state, START);
-    state = reducer(state, START);
+    state = reducer(state, START_TYPE);
+    state = reducer(state, START_TYPE);
     assertState(state, true, 2);
-    state = reducer(state, FAIL);
+    state = reducer(state, FAIL_TYPE);
     assertState(state, true, 1);
-    state = reducer(state, FAIL);
+    state = reducer(state, FAIL_TYPE);
     assertState(state, false, 0);
   });
   it('other types have no effect', () => {
@@ -56,7 +56,7 @@ export const runSingleReducerTests = (reducer, name) => {
     assertState(state, false, 0);
     state = reducer(state, INVALID);
     assertState(state, false, 0);
-    state = reducer(state, START);
+    state = reducer(state, START_TYPE);
     state = reducer(state, INVALID);
     assertState(state, true, 1);
   });
