@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-// import _ from 'lodash';
 import { getOrCreateAsyncConstants } from './async-constants';
+import {
+  ERRORS,
+} from './lib/constants';
 
 const asyncDefaultState = {
   hasPendingRequests: false,
@@ -9,7 +11,9 @@ const asyncDefaultState = {
 
 export const createAsyncReducer = (type) => {
   const asyncConstants = getOrCreateAsyncConstants(type);
-  if (!asyncConstants) throw new Error('type supplied to createAsyncReducer it not a valid async type');
+  if (!asyncConstants) {
+    throw new Error(`createAsyncReducer(type): ${ERRORS.ASYNC_TYPE_NOT_VALID}`);
+  }
 
   const { START_TYPE, SUCCESS_TYPE, FAIL_TYPE } = asyncConstants;
 
@@ -29,7 +33,7 @@ export const createAsyncReducer = (type) => {
 
 
 export const createCombinedAsyncReducer = (types) => {
-  if (!Array.isArray(types)) throw new Error('createCombinedAsyncReducer() requires an array of async action types');
+  if (!Array.isArray(types)) throw new Error(ERRORS.REDUCER_TYPES_NOT_VALID);
   const reducers = types.reduce((acc, type) => {
     const asyncConstants = getOrCreateAsyncConstants(type);
     if (asyncConstants) {
