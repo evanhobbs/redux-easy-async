@@ -33,13 +33,17 @@ export const createAction = (
   payloadReducer = args => _.get(args, 'payload'),
   metaReducer = args => _.get(args, 'meta'),
 ) => {
-  const actionCreator = (...args) => ({
-    type,
-    payload: payloadReducer(...args),
-    meta: metaReducer(...args),
-  });
+  const actionCreator = (...args) => {
+    const action = {
+      type,
+      payload: payloadReducer(...args),
+      meta: metaReducer(...args),
+    };
+    if (_.isError(action.payload)) action.error = true;
+    return action;
+  };
 
-  // TODO: this is just for backwards compatibility - remove soon
+  // TODO: this is just for backwards compatibility - will remove soon
   actionCreator.getType = () => type;
   actionCreator.toString = () => type;
 
