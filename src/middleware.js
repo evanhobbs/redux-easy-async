@@ -21,7 +21,7 @@ import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
  * // Typically this looks something like:
  * // const middlewares = [asyncMiddleware, ...other middlewares]
  */
-export const createAsyncMiddleware = (options) => {
+export const createAsyncMiddleware = (options = {}) => {
   const {
     middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,
     requestOptions,
@@ -58,7 +58,6 @@ export const createAsyncMiddleware = (options) => {
 
     if (!shouldMakeRequest(getState())) return false;
 
-
     dispatch(startActionCreator({
       payload: parseStart(),
       meta: {
@@ -72,8 +71,8 @@ export const createAsyncMiddleware = (options) => {
 
     const req = makeRequest(getState(), requestOptions);
 
-    if (_.get(req, 'then') && typeof _.get(req, 'then') !== 'function') {
-      throw new Error(`makeRequest() for action: "${actionName}" must return a promise.`);
+    if (typeof _.get(req, 'then') !== 'function') {
+      throw new Error(`makeRequest() for action "${actionName}" must return a promise.`);
     }
 
     req.then(

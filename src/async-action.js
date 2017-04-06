@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { getOrCreateAsyncConstants } from './async-constants';
-import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
+import { REDUX_EASY_ASYNC_MAIN_TYPE, ERRORS } from './lib/constants';
 import { createAction } from './action';
 
 const decorateActionCreator = (actionCreator, asyncConstants) => {
@@ -17,7 +17,6 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
   });
 };
 
-
 /**
  * [description]
  * @param  {string|object}   type    [description]
@@ -32,11 +31,17 @@ export const createAsyncAction = (type, fn, options = {}) => {
 
   const asyncConstants = getOrCreateAsyncConstants(type);
   if (!asyncConstants) {
-    throw new Error('createAsyncAction() requires type to be a string or an object inthe format that createAsyncConstants() returns.');
+    throw new Error(`createAsyncAction(type, fn, options): ${ERRORS.ASYNC_TYPE_NOT_VALID}`);
   }
 
   const actionCreator = (...args) => {
     const action = fn(...args);
+    if (typeof action !== 'object') {
+      throw new Error(ERRORS.ACTION_NOT_OBJECT);
+    }
+    if (typeof action.makeRequest !== 'function') {
+      throw new Error(ERRORS.MAKE_REQUEST_NOT_FUNCTION);
+    }
     return {
       type: middlewareMainType,
       ...action,

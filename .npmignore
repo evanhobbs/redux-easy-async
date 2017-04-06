@@ -5,3 +5,4 @@ src/*
 _book/*
 *.DS_Store
 npm-debug.log
+coverage/*

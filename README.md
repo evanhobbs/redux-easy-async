@@ -1,24 +1,13 @@
+## Overview
+
+Temporary home of aync middleware, actions for redux
+
 ## API
-
-### asyncConstants
-
-async constants
-
-**Parameters**
-
--   `name`  
-
-**Properties**
-
--   `NAME` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the base name for the constant used to construct types
--   `START_TYPE` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** start type of the this async action
--   `SUCCESS_TYPE` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** success type of the this async action
--   `FAIL_TYPE` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** fail type of the this async action
 
 ### createAsyncConstants
 
 Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
-format that `createAsyncAction` expects
+format that [createAsyncAction](#createasyncaction) expects
 
 **Parameters**
 
@@ -29,14 +18,14 @@ format that `createAsyncAction` expects
 ```javascript
 const GET_USER = createAsyncConstants('GET_USER');
 // {
-//   NAME: 'GET_USER',
-//   START_TYPE: 'START_GET_USER',
-//   SUCCESS_TYPE: 'SUCCESS_GET_USER',
-//   FAIL_TYPE: 'FAIL_GET_USER'
+//   NAME: 'GET_USER', // general name for action
+//   START_TYPE: 'START_GET_USER', // start type of the this async action
+//   SUCCESS_TYPE: 'SUCCESS_GET_USER', // success type of the this async action
+//   FAIL_TYPE: 'FAIL_GET_USER' // fail type of the this async action
 // }
 ```
 
-Returns **[asyncConstants](#asyncconstants)** returns an object with keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`,
+Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
 `FAIL_TYPE`
 
 ### actionCreator
