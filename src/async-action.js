@@ -18,9 +18,10 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
 };
 
 /**
- * [description]
- * @param  {string|object}   type    [description]
- * @param  {Function} fn      [description]
+ *
+ * @param  {string|object}   type    can either be a string type (e.g. `"GET_POSTS"``) or a
+ * an object created with {@link createAsyncConstants}.
+ * @param  {Function} fn action creator function that will be
  * @param  {Object}   options [description]
  * @return {function} actionCreator
  */

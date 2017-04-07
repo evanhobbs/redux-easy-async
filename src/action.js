@@ -2,6 +2,7 @@ import _ from 'lodash';
 /**
  * Action creator function that creates Flux Standard Actions (FSA) {@link https://github.com/acdlite/flux-standard-action}
  * @typedef {Object} actionCreator
+ * @private
  * @param {Object} options options
  * @param {Object} [options.payload={}] payload for the action
  * @param {Object} [options.meta={}] meta for the action
@@ -15,6 +16,7 @@ import _ from 'lodash';
  * @param  {function} [metaReducer] function which returns the meta from the arguments action
  * is called with.  (Default: `args => args.meta`).
  * @return {actionCreator} an action creator function using the given type
+ * @private
  * @example
  * // simple example
  * const addTodo = createAction('ADD_TODO');
