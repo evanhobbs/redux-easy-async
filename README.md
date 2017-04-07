@@ -375,7 +375,7 @@ License: MIT - `LICENSE` for more information.
 
 Todo
 
-[ ] images/logo
-[ ] finish Motivation section.
-[ ] add error logging in middleware?
-[ ] track request meta in middleware?
+-   images/logo
+-   finish Motivation section.
+-   add error logging in middleware?
+-   track request meta in middleware?
