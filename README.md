@@ -3,9 +3,10 @@
 > Redux Easy Async makes handling asynchronous actions, such as API requests,
 > simple, reliable, and powerful.
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
+[![forthebadge](http://forthebadge.com/badges/ages-12.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/badges/uses-js.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/badges/compatibility-betamax.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/badges/certified-snoop-lion.svg)](http://forthebadge.com)
 
 ![alt tag](https://image.ibb.co/gpFfqa/Screen_Shot_2017_04_06_at_1_54_21_PM.png)
 animated gif should be here
