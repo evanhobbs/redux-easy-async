@@ -48,7 +48,8 @@ tracking asynchronous actions. Features:
     `isFetching` state.
 -   Optional configuration to parse API responses pre-reducer, conditionally
     make requests, prevent multiple requests, and more.
--   All actions are [Flux Standard Actions](https://github.com/acdlite/flux-standard-action).
+-   Makes all your dreams come true and turns you into the person you always
+    wanted to be.
 
 ## Installation
 
