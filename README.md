@@ -98,7 +98,9 @@ yarn add @nerdwallet/redux-easy-async
 
 5. Profit!
 
-**Optional but recommended: Track request status, show a loading spinner**
+
+## Advanced Usage 
+### Track request status, show a loading spinner (optional but strongly recommended)
 1. add a requests reducer that will track all async actions:
 
   ```javascript
