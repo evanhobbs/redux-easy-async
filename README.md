@@ -22,13 +22,12 @@ animated gif should be here
 - [Working examples](#working-examples)
 - [Motivation](#motivation)
 - [API](#api)
-  * [createAsyncConstants](#createasyncconstants)
   * [createAsyncAction](#createasyncaction)
+  * [createAsyncMiddleware](#createasyncmiddleware)
   * [createSingleAsyncReducer](#createsingleasyncreducer)
   * [createMultipleAsyncReducer](#createmultipleasyncreducer)
-  * [createAsyncMiddleware](#createasyncmiddleware)
+  * [createAsyncConstants](#createasyncconstants)
 - [Meta](#meta)
-  * [Acknowledgments](#acknowledgments)
 
 <!-- tocstop -->
 
@@ -193,31 +192,6 @@ None.
 
 ## API
 
-### createAsyncConstants
-
-Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
-format that [createAsyncAction](#createasyncaction), [createMultipleAsyncReducer](#createmultipleasyncreducer), and
-[createSingleAsyncReducer](#createsingleasyncreducer) accept.
-
-**Parameters**
-
--   `type` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the base name for this constant, e.g. `"GET_USER"`
-
-**Examples**
-
-```javascript
-const GET_USER = createAsyncConstants('GET_USER');
-// {
-//   NAME: 'GET_USER', // general name for action
-//   START_TYPE: 'START_GET_USER', // start type of the this async action
-//   SUCCESS_TYPE: 'SUCCESS_GET_USER', // success type of the this async action
-//   FAIL_TYPE: 'FAIL_GET_USER' // fail type of the this async action
-// }
-```
-
-Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
-`FAIL_TYPE`
-
 ### createAsyncAction
 
 **Parameters**
@@ -268,6 +242,35 @@ const myAction = createAsyncAction('MY_ACTION', () => {
 ```
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** actionCreator
+
+### createAsyncMiddleware
+
+Creates an instance of middleware necessary to handle dispatched async actions created with
+[createAsyncAction](#createasyncaction).
+
+**Parameters**
+
+-   `options` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** options to create middleware with.
+    -   `options.requestOptions` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** options that will be passed to all actions'
+        `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
+    -   `options.middlewareMainType` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the action type the
+        middleware will listen for. You most likely don't want to modify this unless for some reason
+        you want multiple instances of async middleware. (optional, default `"REDUX_EASY_ASYNC_MAIN_TYPE"`)
+
+**Examples**
+
+```javascript
+import { createAsyncMiddleware } from 'redux-easy-async';
+const asyncMiddleware = createAsyncMiddleware();
+
+...
+
+// Now add to your middlewares whereever your store is created.
+// Typically this looks something like:
+// const middlewares = [asyncMiddleware, ...other middlewares]
+```
+
+Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** redux middleware for handling async actions
 
 ### createSingleAsyncReducer
 
@@ -339,61 +342,40 @@ const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetc
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Redux reducer
 
-### createAsyncMiddleware
+### createAsyncConstants
 
-Creates an instance of middleware necessary to handle dispatched async actions created with
-[createAsyncAction](#createasyncaction).
+Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
+format that [createAsyncAction](#createasyncaction), [createMultipleAsyncReducer](#createmultipleasyncreducer), and
+[createSingleAsyncReducer](#createsingleasyncreducer) accept.
 
 **Parameters**
 
--   `options` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** options to create middleware with.
-    -   `options.requestOptions` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** options that will be passed to all actions'
-        `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
-    -   `options.middlewareMainType` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the action type the
-        middleware will listen for. You most likely don't want to modify this unless for some reason
-        you want multiple instances of async middleware. (optional, default `"REDUX_EASY_ASYNC_MAIN_TYPE"`)
+-   `type` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the base name for this constant, e.g. `"GET_USER"`
 
 **Examples**
 
 ```javascript
-import { createAsyncMiddleware } from 'redux-easy-async';
-const asyncMiddleware = createAsyncMiddleware();
-
-...
-
-// Now add to your middlewares whereever your store is created.
-// Typically this looks something like:
-// const middlewares = [asyncMiddleware, ...other middlewares]
+const GET_USER = createAsyncConstants('GET_USER');
+// {
+//   NAME: 'GET_USER', // general name for action
+//   START_TYPE: 'START_GET_USER', // start type of the this async action
+//   SUCCESS_TYPE: 'SUCCESS_GET_USER', // success type of the this async action
+//   FAIL_TYPE: 'FAIL_GET_USER' // fail type of the this async action
+// }
 ```
 
-Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** redux middleware for handling async actions
+Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
+`FAIL_TYPE`
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Author: [Evan Hobbs](https://github.com/evanhobbs) - [NerdWallet](https:www.nerdwallet.com)
 
-Distributed under the XYZ license. See `LICENSE` for more information.
-
-[https://github.com/yourname/github-link](https://github.com/dbader/)
-
-[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
-
-[npm-url]: https://npmjs.org/package/datadog-metrics
-
-[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
-
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-
-### Acknowledgments
-
--   redux docs
--   redux act
+License: MIT - `LICENSE` for more information.
 
 Todo
 
--   get some images
--   add error logging in middleware?
--   track request meta in middleware?
--   add Spanish version of readme?
+[ ] images/logo
+[ ] finish Motivation section.
+[ ] add error logging in middleware?
+[ ] track request meta in middleware?

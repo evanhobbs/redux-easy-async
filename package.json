@@ -1,7 +1,7 @@
 {
   "name": "@nerdwallet/redux-easy-async",
   "version": "0.0.4",
-  "description": "",
+  "description": "Redux Easy Async makes handling asynchronous actions, such as API requests, simple, reliable, and powerful",
   "main": "dist/index.js",
   "scripts": {
     "test": "yarn run lint && cross-env NODE_ENV=test nyc mocha",
@@ -21,8 +21,8 @@
     "docs:api": "documentation readme src/index.js --section=API",
     "docs:toc": "markdown-toc -i README.md"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Evan Hobbs <ehobbs@nerdwallet.com>",
+  "license": "MIT",
   "dependencies": {
     "chai": "^3.5.0",
     "flux-standard-action": "^1.2.0",
