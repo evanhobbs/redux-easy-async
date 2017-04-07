@@ -1,4 +1,5 @@
 # Redux Easy Async
+
 > Redux Easy Async makes handling asynchronous actions, such as API requests,
 > simple, reliable, and powerful.
 
@@ -17,8 +18,8 @@ animated gif should be here
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Advanced Usage](#advanced-usage)
-  * [Track request status, show a loading spinner (optional but strongly recommended)](#track-request-status-show-a-loading-spinner-optional-but-strongly-recommended)
-- [Fully Working examples](#fully-working-examples)
+  * [Track status of requests, show a loading spinner](#track-status-of-requests-show-a-loading-spinner)
+- [Working examples](#working-examples)
 - [Motivation](#motivation)
 - [API](#api)
   * [createAsyncConstants](#createasyncconstants)
@@ -30,6 +31,7 @@ animated gif should be here
 <!-- tocstop -->
 
 ## Overview
+
 Redux is fantastic tool for managing application state but since actions, by their
 very nature, are synchronous, asynchronous requests (such as to APIs) can be
 more challenging. Standard approaches involve a lot of boilerplate, reinventing
@@ -37,153 +39,164 @@ the wheel, and opportunity for error. For more info see: [Motivation](#motivatio
 
 Redux Easy Async provides a simple yet powerful approach for creating and
 tracking asynchronous actions. Features:
-* Create asynchronous actions (including associated constants for start,
-  success, and fail) with a single call.
-* Create reducer(s) that automatically track the status of asynchronous actions,
-  i.e. pending, completed. No more dispatching loading actions or storing
-  `isFetching` state.
-* Optional configuration to parse API responses pre-reducer, conditionally
-  make requests, prevent multiple requests, and more.
+
+-   Create asynchronous actions (including associated constants for start,
+    success, and fail) with a single call.
+-   Create reducer(s) that automatically track the status of asynchronous actions,
+    i.e. pending, completed. No more dispatching loading actions or storing
+    `isFetching` state.
+-   Optional configuration to parse API responses pre-reducer, conditionally
+    make requests, prevent multiple requests, and more.
 
 ## Installation
 
 With NPM:
+
 ```sh
 npm install @nerdwallet/redux-easy-async --save
 ```
+
 or with Yarn:
+
 ```sh
 yarn add @nerdwallet/redux-easy-async
 ```
 
 ## Basic Usage
-1. Add the async middleware to wherever you create your redux store:
-  ```javascript
-  // assuming have created and imported a root reducer:
-  // e.g. import rootReducer from './reducers';
-  import { createStore, applyMiddleware } from 'redux';
-  import { createAsyncMiddleware } from '@nerdwallet/redux-easy-async';
 
-  const asyncMiddleware = createAsyncMiddleware();
-  createStore(rootReducer, applyMiddleware(asyncMiddleware));
-  ```
-2. Create an async action:
-  ```javascript
-  import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+1.  Add the async middleware to wherever you create your redux store:
 
-  export const fetchUser = createAsyncAction('FETCH_USER', (id) => {
-    return {
-      makeRequest: () => fetch(`https://myapi.com/api/user/${id}`),
+    ```javascript
+    // assuming have created and imported a root reducer:
+    // e.g. import rootReducer from './reducers';
+    import { createStore, applyMiddleware } from 'redux';
+    import { createAsyncMiddleware } from '@nerdwallet/redux-easy-async';
+
+    const asyncMiddleware = createAsyncMiddleware();
+    createStore(rootReducer, applyMiddleware(asyncMiddleware));
+    ```
+
+2.  Create an async action:
+
+    ```javascript
+    import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+
+    export const fetchUser = createAsyncAction('FETCH_USER', (id) => {
+      return {
+        makeRequest: () => fetch(`https://myapi.com/api/user/${id}`),
+      };
+    });
+    // fetchUser is now a function that can be dispatched:
+    //   const id = 1;
+    //   dispatch(fetchUser(id))
+    //   
+    // but it also has constant attached for start, success, fail
+    //   fetchUser.START_TYPE === "START_FETCH_USER"
+    //   fetchUser.SUCCESS_TYPE === "SUCCESS_FETCH_USER"
+    //   fetchUser.FAIL_TYPE === "FAIL_FETCH_USER"
+    ```
+
+3.  Handle the action in a reducer somewhere:
+
+    ```javascript
+    const usersReducer = (state = {}, action) => {
+      const { type, payload } = action;
+      switch (type) {
+        case fetchUser.SUCCESS_TYPE:
+          return {
+            ...state,
+            [payload.id]: payload
+          };
+        case fetchUser.FAIL_TYPE:
+          return {
+            ...state,
+            [payload.id]: {
+              ...payload,
+              error: true,
+            },
+          };
+        default:
+          return state;
+      }
     };
-  });
-  // fetchUser is now a function that can be dispatched:
-  //   const id = 1;
-  //   dispatch(fetchUser(id))
-  //   
-  // but it also has constant attached for start, success, fail
-  //   fetchUser.START_TYPE === "START_FETCH_USER"
-  //   fetchUser.SUCCESS_TYPE === "SUCCESS_FETCH_USER"
-  //   fetchUser.FAIL_TYPE === "FAIL_FETCH_USER"
-  ```
+    ```
 
-3. Handle the action in a reducer somewhere:
+4.  Dispatch the action somewhere in your app:
 
-  ```javascript
-  const usersReducer = (state = {}, action) => {
-    const { type, payload } = action;
-    switch (type) {
-      case fetchUser.SUCCESS_TYPE:
-        return {
-          ...state,
-          [payload.id]: payload
-        };
-      case fetchUser.FAIL_TYPE:
-        return {
-          ...state,
-          [payload.id]: {
-            ...payload,
-            error: true,
-          },
-        };
-      default:
-        return state;
-    }
-  };
-  ```
+    ```javascript
+    dispatch(fetchUser(1));
+    ```
 
-4. Dispatch the action somewhere in your app:
-  ```javascript
-  dispatch(fetchUser(1));
-  ```
+5.  Profit!
 
-5. Profit!
+## Advanced Usage
 
+### Track status of requests, show a loading spinner
 
-## Advanced Usage 
-### Track request status, show a loading spinner (optional but strongly recommended)
-1. add a requests reducer that will track all async actions:
+1.  add a requests reducer that will track all async actions:
 
-  ```javascript
-  import { createCombinedAsyncReducer } from '@nerdwallet/redux-easy-async';
-  // createCombinedAsyncReducer takes an array of async actions and returns
-  // a reducer that tracks them
-  const requestsReducer = createCombinedAsyncReducer([fetchPost]);
-  // now you have a reducer with keys for each each action passed to it
-  // `createCombinedAsyncReducer()`:
-  // {
-  //  FETCH_USER: {
-  //    hasPendingRequests: false,
-  //    pendingRequests: 0,
-  //  }
-  // }
-  ```
+    ```javascript
+    import { createCombinedAsyncReducer } from '@nerdwallet/redux-easy-async';
+    // createCombinedAsyncReducer takes an array of async actions and returns
+    // a reducer that tracks them
+    const requestsReducer = createCombinedAsyncReducer([fetchPost]);
+    // now you have a reducer with keys for each each action passed to it
+    // `createCombinedAsyncReducer()`:
+    // {
+    //  FETCH_USER: {
+    //    hasPendingRequests: false,
+    //    pendingRequests: 0,
+    //  }
+    // }
+    ```
 
-2. Add the requests reducer to your main reducer somewhere:
+2.  Add the requests reducer to your main reducer somewhere:
 
-  ```javascript
-  import { combineReducers } from 'redux';
+    ```javascript
+    import { combineReducers } from 'redux';
 
-  const rootReducer = combineReducers({
-    requests: requestsReducer,
-    // ...the other reducers for your app here
-  });
-  ```
+    const rootReducer = combineReducers({
+      requests: requestsReducer,
+      // ...the other reducers for your app here
+    });
+    ```
 
-3. Show loading spinner in a component somewhere:
+3.  Show loading spinner in a component somewhere:
 
-  ```javascript
-  // assuming you have the state of the request store, e.g:
-  //  const requests = store.getState().requests;
-  //  -- or --
-  //  const { requests } = this.props;
-  //    
-  const isLoading = requests.FETCH_USER.hasPendingRequests;
-  return (
-    <div>
-      { isLoading && <div>Show a loading spinner</div> }
-      { !isLoading && <div>Show user data</div> }
-    </div>);
-  ```
+    ```javascript
+    // assuming you have the state of the request store, e.g:
+    //  const requests = store.getState().requests;
+    //  -- or --
+    //  const { requests } = this.props;
+    //    
+    const isLoading = requests.FETCH_USER.hasPendingRequests;
+    return (
+      <div>
+        { isLoading && <div>Show a loading spinner</div> }
+        { !isLoading && <div>Show user data</div> }
+      </div>);
+    ```
 
-## Fully Working examples
+## Working examples
 
 The examples directory includes fully working examples which you can run locally and test out Redux Easy Async.
 
-1. Install dependencies for the example you want to try (with npm or yarn):
+1.  Install dependencies for the example you want to try (with npm or yarn):
 
-  ```sh
-  > cd examples/basic
-  > npm install (or yarn install)
-  ```
+    ```sh
+    > cd examples/basic
+    > npm install (or yarn install)
+    ```
 
-2. Start the server
-  ```
-  > npm start (or yarn start)
-  ```
+2.  Start the server
 
-3. Go to `http://localhost:4001/` in your browser.
+        > npm start (or yarn start)
+
+3.  Go to `http://localhost:4001/` in your browser.
 
 ## Motivation
+
+None.
 
 ## API
 
@@ -217,8 +230,28 @@ Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 -   `type` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))** can either be a string type (e.g. \`"GET_POSTS"``) or a
     an object created with [createAsyncConstants](#createasyncconstants).
--   `fn` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** action creator function that will be
+-   `fn` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** action creator function. When you dispatch this action
 -   `options` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** [description]
+
+**Examples**
+
+```javascript
+{
+  // function that makes the actual request. Must return a promise.
+  makeRequest,
+  // additional meta that will be passed to the action if any - must be an object
+  meta = {},
+  // function that returns boolean for whether to proceed with the request.
+  shouldMakeRequest = () => true,
+  // on start the result of parse() is passed as the payload of the start action
+  // This is useful for propagating params down
+  parseStart = () => null,
+  // on success the result of parse() is passed as the payload of the success action
+  parseSuccess = resp => resp,
+  // on fail the result of parseFail() is passed as the payload of the fail action
+  parseFail = resp => resp,
+}
+```
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** actionCreator
 
@@ -251,28 +284,32 @@ const asyncMiddleware = createAsyncMiddleware();
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** redux middleware for handling async actions
 
-
-
 ## Meta
 
 Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
 
-Distributed under the XYZ license. See ``LICENSE`` for more information.
+Distributed under the XYZ license. See `LICENSE` for more information.
 
 [https://github.com/yourname/github-link](https://github.com/dbader/)
 
 [npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
+
 [npm-url]: https://npmjs.org/package/datadog-metrics
+
 [npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
+
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
+
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 
 ### Acknowledgments
-- redux docs
-- redux act
+
+-   redux docs
+-   redux act
 
 Todo
-- get some images
-- add error logging in middleware?
-- track request meta in middleware?
-- add Spanish version of readme?
+
+-   get some images
+-   add error logging in middleware?
+-   track request meta in middleware?
+-   add Spanish version of readme?

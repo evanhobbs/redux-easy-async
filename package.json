@@ -17,7 +17,8 @@
     "build": "yarn run clean && yarn run babel",
     "dev": "yarn run babel -- --watch",
     "docs:dev": "documentation serve src/index.js --watch",
-    "docs:build": "documentation readme src/index.js --section=API",
+    "docs:build": "yarn run docs:api && yarn run docs:toc",
+    "docs:api": "documentation readme src/index.js --section=API",
     "docs:toc": "markdown-toc -i README.md"
   },
   "author": "",
