@@ -2,13 +2,12 @@ import { combineReducers } from 'redux';
 import { createCombinedAsyncReducer } from '@nerdwallet/redux-easy-async';
 import { fetchPost } from './actions';
 
-const selectedPost = (state = 1, action) => {
-  if (action.type === 'SELECT_POST') return action.id;
+const selectedPost = (state = 1, { type, payload }) => {
+  if (type === 'SELECT_POST') return payload.id;
   return state;
 };
 
-const posts = (state = {}, action) => {
-  const { type, payload } = action;
+const posts = (state = {}, { type, payload }) => {
   switch (type) {
     case fetchPost.SUCCESS_TYPE:
       return {

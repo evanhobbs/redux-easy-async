@@ -19,5 +19,7 @@ export const fetchPost = createAsyncAction(
 
 export const selectNewPost = (id) => ({
   type: 'SELECT_POST',
-  id,
+  payload: {
+    id,
+  }
 });

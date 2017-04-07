@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { fetchPost, selectNewPost } from './lib/actions';
-import './App.css';
+import './css/App.css';
 import Post from './components/Post';
 import Arrows from './components/Arrows';
 import Loading from './components/Loading';

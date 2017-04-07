@@ -21,10 +21,28 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  *
  * @param  {string|object}   type    can either be a string type (e.g. `"GET_POSTS"``) or a
  * an object created with {@link createAsyncConstants}.
- * @param  {Function} fn action creator function that will be
+ * @param  {Function} fn action creator function. When you dispatch this action 
  * @param  {Object}   options [description]
  * @return {function} actionCreator
+ * @example
+ * {
+ *   // function that makes the actual request. Must return a promise.
+ *   makeRequest,
+ *   // additional meta that will be passed to the action if any - must be an object
+ *   meta = {},
+ *   // function that returns boolean for whether to proceed with the request.
+ *   shouldMakeRequest = () => true,
+ *   // on start the result of parse() is passed as the payload of the start action
+ *   // This is useful for propagating params down
+ *   parseStart = () => null,
+ *   // on success the result of parse() is passed as the payload of the success action
+ *   parseSuccess = resp => resp,
+ *   // on fail the result of parseFail() is passed as the payload of the fail action
+ *   parseFail = resp => resp,
+ * }
  */
+
+
 export const createAsyncAction = (type, fn, options = {}) => {
   const {
     middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,

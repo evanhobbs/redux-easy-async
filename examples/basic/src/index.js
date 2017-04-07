@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import 'whatwg-fetch';
 import App from './App';
-import './index.css';
+import './css/index.css';
 import createStore from './lib/store';
 
 const store = createStore();
