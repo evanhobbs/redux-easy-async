@@ -22,7 +22,7 @@
     "docs:toc": "markdown-toc -i README.md"
   },
   "author": "Evan Hobbs <ehobbs@nerdwallet.com>",
-  "license": "MIT",
+  "license": "",
   "dependencies": {
     "chai": "^3.5.0",
     "flux-standard-action": "^1.2.0",
