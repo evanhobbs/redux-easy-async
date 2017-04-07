@@ -47,6 +47,7 @@ tracking asynchronous actions. Features:
     `isFetching` state.
 -   Optional configuration to parse API responses pre-reducer, conditionally
     make requests, prevent multiple requests, and more.
+-   All actions are [Flux Standard Actions](https://github.com/acdlite/flux-standard-action).
 
 ## Installation
 
@@ -103,18 +104,9 @@ yarn add @nerdwallet/redux-easy-async
       const { type, payload } = action;
       switch (type) {
         case fetchUser.SUCCESS_TYPE:
-          return {
-            ...state,
-            [payload.id]: payload
-          };
+          // do something here on succcess
         case fetchUser.FAIL_TYPE:
-          return {
-            ...state,
-            [payload.id]: {
-              ...payload,
-              error: true,
-            },
-          };
+          // do something here with fail
         default:
           return state;
       }
