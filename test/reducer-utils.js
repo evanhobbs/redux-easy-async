@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { createCombinedAsyncReducer } from '../src/reducer';
+import { createMultipleAsyncReducer } from '../src/reducer';
 import { createAsyncAction } from '../src/async-action';
 import { createAsyncConstants } from '../src/async-constants';
 
@@ -97,7 +97,7 @@ export const runCombinedReducerTests = (asyncConstantType) => {
     }
 
 
-    const reducer = createCombinedAsyncReducer(types);
+    const reducer = createMultipleAsyncReducer(types);
     assert.deepEqual(reducer(), state);
 
     state = reducer(state, { type: 'START_TEST' });

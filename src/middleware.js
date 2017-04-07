@@ -4,13 +4,15 @@ import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
 /**
  * Creates an instance of middleware necessary to handle dispatched async actions created with
  * {@link createAsyncAction}.
- * @param  {object} options middleware options
- * @param {object} [options.requestOptions] if you wish to pass addtional options to all actions'
- * `makeRequest` functions: e.g. `makeRequest(state, options)`.
+ * @param  {object} options options to create middleware with.
+ * @param {object} [options.requestOptions] options that will be passed to all actions'
+ * `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
  * @param  {string} [options.middlewareMainType="REDUX_EASY_ASYNC_MAIN_TYPE"] the action type the
  * middleware will listen for. You most likely don't want to modify this unless for some reason
  * you want multiple instances of async middleware.
+ *
  * @return {function} redux middleware for handling async actions
+ *
  * @example
  * import { createAsyncMiddleware } from 'redux-easy-async';
  * const asyncMiddleware = createAsyncMiddleware();

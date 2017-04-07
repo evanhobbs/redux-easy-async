@@ -1,42 +1,42 @@
 import { assert } from 'chai';
-import { createAsyncReducer, createCombinedAsyncReducer } from '../src/reducer';
+import { createSingleAsyncReducer, createMultipleAsyncReducer } from '../src/reducer';
 import { createAsyncConstants } from '../src/async-constants';
 import { createAsyncAction } from '../src/async-action';
 import { runSingleReducerTests, runCombinedReducerTests } from './reducer-utils';
 
 
-describe('createAsyncReducer()', () => {
+describe('createSingleAsyncReducer()', () => {
   it('throws error if type is not valid', () => {
-    assert.throws(() => createAsyncReducer({}));
-    assert.throws(() => createAsyncReducer(null));
-    assert.throws(() => createAsyncReducer());
-    assert.throws(() => createAsyncReducer(123));
-    assert.throws(() => createAsyncReducer({}));
+    assert.throws(() => createSingleAsyncReducer({}));
+    assert.throws(() => createSingleAsyncReducer(null));
+    assert.throws(() => createSingleAsyncReducer());
+    assert.throws(() => createSingleAsyncReducer(123));
+    assert.throws(() => createSingleAsyncReducer({}));
   });
   describe('works with type as a string', () => {
-    const reducer = createAsyncReducer('TEST');
+    const reducer = createSingleAsyncReducer('TEST');
     runSingleReducerTests(reducer, 'TEST');
   });
   describe('works with type as async constants', () => {
     const asyncConstants = createAsyncConstants('TEST');
-    const reducer = createAsyncReducer(asyncConstants);
+    const reducer = createSingleAsyncReducer(asyncConstants);
     runSingleReducerTests(reducer, 'TEST');
   });
   describe('works with async actions', () => {
     const asyncAction = createAsyncAction('TEST', () => {});
-    const reducer = createAsyncReducer(asyncAction);
+    const reducer = createSingleAsyncReducer(asyncAction);
     runSingleReducerTests(reducer, 'TEST');
   });
 });
 
-describe('createCombinedAsyncReducer', () => {
+describe('createMultipleAsyncReducer', () => {
   it('throws error if types is not array', () => {
     assert.throws(() => {
-      createCombinedAsyncReducer();
+      createMultipleAsyncReducer();
     });
   });
   it('skips invalid types', () => {
-    const reducer = createCombinedAsyncReducer([() => {}, 123, 'TEST']);
+    const reducer = createMultipleAsyncReducer([() => {}, 123, 'TEST']);
     // invalid async types were skipped and only have the one reducer
     assert.deepEqual(reducer(), {
       TEST: { hasPendingRequests: false, pendingRequests: 0 },

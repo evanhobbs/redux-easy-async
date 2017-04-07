@@ -24,6 +24,8 @@ animated gif should be here
 - [API](#api)
   * [createAsyncConstants](#createasyncconstants)
   * [createAsyncAction](#createasyncaction)
+  * [createSingleAsyncReducer](#createsingleasyncreducer)
+  * [createMultipleAsyncReducer](#createmultipleasyncreducer)
   * [createAsyncMiddleware](#createasyncmiddleware)
 - [Meta](#meta)
   * [Acknowledgments](#acknowledgments)
@@ -128,12 +130,11 @@ yarn add @nerdwallet/redux-easy-async
 1.  add a requests reducer that will track all async actions:
 
     ```javascript
-    import { createCombinedAsyncReducer } from '@nerdwallet/redux-easy-async';
-    // createCombinedAsyncReducer takes an array of async actions and returns
+    import { createMultipleAsyncReducer } from '@nerdwallet/redux-easy-async';
+    // createMultipleAsyncReducer takes an array of async actions and returns
     // a reducer that tracks them
-    const requestsReducer = createCombinedAsyncReducer([fetchPost]);
+    const requestsReducer = createMultipleAsyncReducer([fetchPost]);
     // now you have a reducer with keys for each each action passed to it
-    // `createCombinedAsyncReducer()`:
     // {
     //  FETCH_USER: {
     //    hasPendingRequests: false,
@@ -195,11 +196,12 @@ None.
 ### createAsyncConstants
 
 Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
-format that [createAsyncAction](#createasyncaction) expects
+format that [createAsyncAction](#createasyncaction), [createMultipleAsyncReducer](#createmultipleasyncreducer), and
+[createSingleAsyncReducer](#createsingleasyncreducer) accept.
 
 **Parameters**
 
--   `name` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the base name for this constant, e.g. `"GET_USER"`
+-   `type` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the base name for this constant, e.g. `"GET_USER"`
 
 **Examples**
 
@@ -220,32 +222,122 @@ Returns **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 **Parameters**
 
--   `type` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))** can either be a string type (e.g. \`"GET_POSTS"``) or a
-    an object created with [createAsyncConstants](#createasyncconstants).
--   `fn` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** action creator function. When you dispatch this action
+-   `type` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))** can either be a string (e.g. \`"GET_POSTS"``) or a
+    a constants object created with [createAsyncConstants](#createasyncconstants).
+-   `fn` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** action creator function that returns an object with action configuration.
+    See example below for configuration options. Only `makeRequest is required`.
 -   `options` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** [description]
 
 **Examples**
 
+_All configuration options for async action_
+
 ```javascript
-{
-  // function that makes the actual request. Must return a promise.
-  makeRequest,
-  // additional meta that will be passed to the action if any - must be an object
-  meta = {},
-  // function that returns boolean for whether to proceed with the request.
-  shouldMakeRequest = () => true,
-  // on start the result of parse() is passed as the payload of the start action
-  // This is useful for propagating params down
-  parseStart = () => null,
-  // on success the result of parse() is passed as the payload of the success action
-  parseSuccess = resp => resp,
-  // on fail the result of parseFail() is passed as the payload of the fail action
-  parseFail = resp => resp,
-}
+import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+
+const myAction = createAsyncAction('MY_ACTION', () => {
+  {
+    // function that makes the actual request. Return value must be a promise. In this example
+    // `fetch()` returns a promise. **REQUIRED**
+    makeRequest: () => fetch('/api/posts'),
+
+    // additional meta that will be passed to the start, success, and fail actions if any.
+    // meta will have `actionName` and `asyncType`("start", "success", or "fail"). Success and
+    // fail action meta will also have a `requestTime`. *OPTIONAL*
+    meta = {},
+
+    // function that takes your redux state and returns true or false whether to proceed with
+    // the request. For example: checking if there is already a similar request in progress or
+    // the requested data is already cached. *OPTIONAL*
+    shouldMakeRequest = (state) => true,
+
+    // `parseStart`, `parseSuccess`, and `parseSuccess` can be useful if you want to modify
+    // raw API responses, errors, etc. before passing them to your reducer. The return value
+    // of each becomes the payload for start, success, and fail actions. By default response
+    // will not be modified.
+    //
+    // the return value of `parseStart` becomes the payload for the start action. *OPTIONAL*
+    parseStart = () => null,
+    // the return value of `parseSuccess` becomes the payload for the success action. *OPTIONAL*
+    parseSuccess = resp => resp,
+    // the return value of `parseFail` becomes the payload for the fail action. *OPTIONAL*
+    parseFail = resp => resp,
+  }
+
+})
 ```
 
 Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** actionCreator
+
+### createSingleAsyncReducer
+
+Creates a reducer that automatically tracks the status of a SINGLE async actions created with
+[createAsyncAction](#createasyncaction). Unless you are only ever going to have one async action you most
+likely want to use: [createMultipleAsyncReducer](#createmultipleasyncreducer).
+
+**Parameters**
+
+-   `type` **([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))** of async action to track. Type can be one of the following:
+    a string (e.g. \`"GET_POSTS"``), a constants object created with [createAsyncConstants](#createasyncconstants), or
+    an async action created with [createAsyncAction](#createasyncaction).
+
+Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Redux reducer.
+
+### createMultipleAsyncReducer
+
+Creates a requests reducer that automatically tracks the status of MULTIPLE async actions created
+with [createAsyncAction](#createasyncaction).
+
+**Parameters**
+
+-   `types` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function))>** an array of async actions to track. Types can be
+    one of the following: a string (e.g. \`"GET_POSTS"``), a constants object created with
+    [createAsyncConstants](#createasyncconstants), or an async action created with [createAsyncAction](#createasyncaction).
+
+**Examples**
+
+```javascript
+import { createAsyncAction, createAsyncConstants } from '@nerdwallet/redux-easy-async';
+
+// Types can async action, constants object, or string:
+
+// string constant
+const FETCH_POSTS = 'FETCH_POSTS';
+
+// async action
+export const fetchUser = createAsyncAction('FETCH_USER', (id) => {
+  return {
+    makeRequest: () => fetch(`https://myapi.com/api/user/${id}`),
+  };
+});
+
+// async constant
+const fetchComments = createAsyncConstants('FETCH_COMMENTS');
+
+const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetchComments]);
+
+// Now `requestsReducer` is reducer that automatically tracks each of the asynchronous action
+// types.
+// {
+//   {
+//    FETCH_POSTS: {
+//      hasPendingRequests: false,
+//      pendingRequests: 0,
+//   },
+//   {
+//    FETCH_USER: {
+//      hasPendingRequests: false,
+//      pendingRequests: 0,
+//   }
+//   {
+//    FETCH_COMMENTS: {
+//      hasPendingRequests: false,
+//      pendingRequests: 0,
+//   }
+// }
+```
+
+Returns **[function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** Redux reducer
 
 ### createAsyncMiddleware
 
@@ -254,9 +346,9 @@ Creates an instance of middleware necessary to handle dispatched async actions c
 
 **Parameters**
 
--   `options` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** middleware options
-    -   `options.requestOptions` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** if you wish to pass addtional options to all actions'
-        `makeRequest` functions: e.g. `makeRequest(state, options)`.
+-   `options` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)](default {})** options to create middleware with.
+    -   `options.requestOptions` **\[[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** options that will be passed to all actions'
+        `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
     -   `options.middlewareMainType` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** the action type the
         middleware will listen for. You most likely don't want to modify this unless for some reason
         you want multiple instances of async middleware. (optional, default `"REDUX_EASY_ASYNC_MAIN_TYPE"`)

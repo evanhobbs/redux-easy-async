@@ -1,9 +1,9 @@
 import _ from 'lodash';
-
 /**
  * Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
- * format that {@link createAsyncAction} expects
- * @param  {string} name - the base name for this constant, e.g. `"GET_USER"`
+ * format that {@link createAsyncAction}, {@link createMultipleAsyncReducer}, and
+ * {@link createSingleAsyncReducer} accept.
+ * @param  {string} type - the base name for this constant, e.g. `"GET_USER"`
  * @return {object} returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
  * `FAIL_TYPE`
  * @example
@@ -15,11 +15,11 @@ import _ from 'lodash';
  * //   FAIL_TYPE: 'FAIL_GET_USER' // fail type of the this async action
  * // }
  */
-export const createAsyncConstants = name => ({
-  NAME: name,
-  START_TYPE: `START_${name}`,
-  SUCCESS_TYPE: `SUCCESS_${name}`,
-  FAIL_TYPE: `FAIL_${name}`,
+export const createAsyncConstants = type => ({
+  NAME: type,
+  START_TYPE: `START_${type}`,
+  SUCCESS_TYPE: `SUCCESS_${type}`,
+  FAIL_TYPE: `FAIL_${type}`,
 });
 
 const requiredKeys = ['NAME', 'START_TYPE', 'FAIL_TYPE', 'SUCCESS_TYPE'];

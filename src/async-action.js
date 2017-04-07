@@ -19,27 +19,45 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
 
 /**
  *
- * @param  {string|object}   type    can either be a string type (e.g. `"GET_POSTS"``) or a
- * an object created with {@link createAsyncConstants}.
- * @param  {Function} fn action creator function. When you dispatch this action 
+ * @param  {string|object}   type    can either be a string (e.g. `"GET_POSTS"``) or a
+ * a constants object created with {@link createAsyncConstants}.
+ * @param  {Function} fn action creator function that returns an object with action configuration.
+ * See example below for configuration options. Only `makeRequest is required`.
  * @param  {Object}   options [description]
  * @return {function} actionCreator
- * @example
- * {
- *   // function that makes the actual request. Must return a promise.
- *   makeRequest,
- *   // additional meta that will be passed to the action if any - must be an object
- *   meta = {},
- *   // function that returns boolean for whether to proceed with the request.
- *   shouldMakeRequest = () => true,
- *   // on start the result of parse() is passed as the payload of the start action
- *   // This is useful for propagating params down
- *   parseStart = () => null,
- *   // on success the result of parse() is passed as the payload of the success action
- *   parseSuccess = resp => resp,
- *   // on fail the result of parseFail() is passed as the payload of the fail action
- *   parseFail = resp => resp,
- * }
+ * @example <caption>All configuration options for async action</caption>
+ * import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+ *
+ * const myAction = createAsyncAction('MY_ACTION', () => {
+ *   {
+ *     // function that makes the actual request. Return value must be a promise. In this example
+ *     // `fetch()` returns a promise. **REQUIRED**
+ *     makeRequest: () => fetch('/api/posts'),
+
+ *     // additional meta that will be passed to the start, success, and fail actions if any.
+ *     // meta will have `actionName` and `asyncType`("start", "success", or "fail"). Success and
+ *     // fail action meta will also have a `requestTime`. *OPTIONAL*
+ *     meta = {},
+
+ *     // function that takes your redux state and returns true or false whether to proceed with
+ *     // the request. For example: checking if there is already a similar request in progress or
+ *     // the requested data is already cached. *OPTIONAL*
+ *     shouldMakeRequest = (state) => true,
+ *
+ *     // `parseStart`, `parseSuccess`, and `parseSuccess` can be useful if you want to modify
+ *     // raw API responses, errors, etc. before passing them to your reducer. The return value
+ *     // of each becomes the payload for start, success, and fail actions. By default response
+ *     // will not be modified.
+ *     //
+ *     // the return value of `parseStart` becomes the payload for the start action. *OPTIONAL*
+ *     parseStart = () => null,
+ *     // the return value of `parseSuccess` becomes the payload for the success action. *OPTIONAL*
+ *     parseSuccess = resp => resp,
+ *     // the return value of `parseFail` becomes the payload for the fail action. *OPTIONAL*
+ *     parseFail = resp => resp,
+ *   }
+ *
+ * })
  */
 
 
