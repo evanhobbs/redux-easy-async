@@ -9,6 +9,27 @@
 ![alt tag](https://image.ibb.co/gpFfqa/Screen_Shot_2017_04_06_at_1_54_21_PM.png)
 animated gif should be here
 
+## Table of Contents
+
+<!-- toc -->
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Advanced Usage](#advanced-usage)
+  * [Track request status, show a loading spinner (optional but strongly recommended)](#track-request-status-show-a-loading-spinner-optional-but-strongly-recommended)
+- [Fully Working examples](#fully-working-examples)
+- [Motivation](#motivation)
+- [API](#api)
+  * [createAsyncConstants](#createasyncconstants)
+  * [createAsyncAction](#createasyncaction)
+  * [createAsyncMiddleware](#createasyncmiddleware)
+- [Meta](#meta)
+  * [Acknowledgments](#acknowledgments)
+
+<!-- tocstop -->
+
+## Overview
 Redux is fantastic tool for managing application state but since actions, by their
 very nature, are synchronous, asynchronous requests (such as to APIs) can be
 more challenging. Standard approaches involve a lot of boilerplate, reinventing
@@ -23,7 +44,6 @@ tracking asynchronous actions. Features:
   `isFetching` state.
 * Optional configuration to parse API responses pre-reducer, conditionally
   make requests, prevent multiple requests, and more.
-
 
 ## Installation
 
