@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+}
+
+.loading {
+  margin-top: 100px;
+}
+
+.loading-image {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.post {
+  margin: 30px auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.arrow-container {
+  max-width: 200px;
+  margin: 20px auto;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
