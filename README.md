@@ -23,11 +23,11 @@ animated gif should be here
 - [Working examples](#working-examples)
 - [Motivation](#motivation)
 - [API](#api)
-  * [createAsyncAction](#createasyncaction)
-  * [createAsyncMiddleware](#createasyncmiddleware)
-  * [createSingleAsyncReducer](#createsingleasyncreducer)
-  * [createMultipleAsyncReducer](#createmultipleasyncreducer)
-  * [createAsyncConstants](#createasyncconstants)
+  * [createAsyncAction(type, fn, [options]) ⇒ function](#createasyncactiontype-fn-options-%E2%87%92-function)
+  * [createAsyncConstants(type) ⇒ object](#createasyncconstantstype-%E2%87%92-object)
+  * [createAsyncMiddleware(options) ⇒ function](#createasyncmiddlewareoptions-%E2%87%92-function)
+  * [createSingleAsyncReducer(type) ⇒ function](#createsingleasyncreducertype-%E2%87%92-function)
+  * [createMultipleAsyncReducer(types) ⇒ function](#createmultipleasyncreducertypes-%E2%87%92-function)
 - [Meta](#meta)
 
 <!-- tocstop -->
@@ -194,6 +194,8 @@ None.
 
 ## API
 
+
+<!-- AUTO_GENERATED_API_SECTION -->
 <a name="createAsyncAction"></a>
 
 ### createAsyncAction(type, fn, [options]) ⇒ <code>function</code>
@@ -202,7 +204,7 @@ None.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| type |  |  | can either be a string (e.g. "GET_POSTS") or a a constants object created with [createAsyncConstants](#createAsyncConstants). |
+| type | <code>string</code> \| <code>object</code> |  | can either be - a string (e.g. "GET_POSTS") - a constants object created with [createAsyncConstants](#createAsyncConstants). |
 | fn | <code>function</code> |  | action creator function that returns an object with action configuration. See example below for configuration options. Only `makeRequest is required`. |
 | [options] | <code>Object</code> |  | additional configuration options |
 | [options.middlewareMainType] | <code>Object</code> | <code>REDUX_EASY_ASYNC_MAIN_TYPE</code> | the middleware action type this action will be dispatched with. You most likely don't want to modify this unless for some reason you want multiple instances of [async middleware](#createAsyncMiddleware). |
@@ -374,6 +376,8 @@ const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetc
 
 * * *
 
+
+<!-- AUTO_GENERATED_API_SECTION -->
 
 
 ## Meta
