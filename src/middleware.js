@@ -61,22 +61,27 @@ export const createAsyncMiddleware = (options = {}) => {
 
     if (!shouldMakeRequest(getState())) return false;
 
+    // create a unique ID for each request
+    const asyncID = _.uniqueId('asyncID');
+    // make the request and save the returned promise
+    const req = makeRequest(getState(), requestOptions);
+    // save the time the request was made
+    const requestStartTime = Date.now();
+
+    if (typeof _.get(req, 'then') !== 'function') {
+      throw new Error(`makeRequest() for action "${actionName}" must return a promise.`);
+    }
+
     dispatch(startActionCreator({
       payload: parseStart(),
       meta: {
         ...meta,
         actionName,
         asyncType: 'start',
+        requestStartTime,
+        asyncID,
       },
     }));
-
-    const startTime = Date.now();
-
-    const req = makeRequest(getState(), requestOptions);
-
-    if (typeof _.get(req, 'then') !== 'function') {
-      throw new Error(`makeRequest() for action "${actionName}" must return a promise.`);
-    }
 
     req.then(
       resp => dispatch(successActionCreator({
@@ -87,7 +92,9 @@ export const createAsyncMiddleware = (options = {}) => {
           resp,
           actionName,
           asyncType: 'success',
-          requestTime: Date.now() - startTime,
+          asyncID,
+          requestStartTime,
+          requestDuration: Date.now() - requestStartTime,
         },
       })),
       resp => dispatch(failActionCreator({
@@ -98,7 +105,9 @@ export const createAsyncMiddleware = (options = {}) => {
           resp,
           actionName,
           asyncType: 'fail',
-          requestTime: Date.now() - startTime,
+          asyncID,
+          requestStartTime,
+          requestDuration: Date.now() - requestStartTime,
         },
       })),
       );

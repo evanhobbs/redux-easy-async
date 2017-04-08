@@ -39,7 +39,7 @@ describe('createMultipleAsyncReducer', () => {
     const reducer = createMultipleAsyncReducer([() => {}, 123, 'TEST']);
     // invalid async types were skipped and only have the one reducer
     assert.deepEqual(reducer(), {
-      TEST: { hasPendingRequests: false, pendingRequests: 0 },
+      TEST: { hasPendingRequests: false, pendingRequests: [] },
     });
   });
   describe('works for string types', () => {

@@ -65,11 +65,14 @@ describe('createAsyncMiddleware()', () => {
       });
       store.dispatch(action);
       const startAction = store.getActions()[0];
-      assert.deepEqual(startAction.meta, {
-        something: 'something',
-        actionName: 'TEST',
-        asyncType: 'start',
-      });
+      const { meta } = startAction;
+      // tough to be exact but make sure start time is a number fairly close to now
+      assert.approximately(meta.requestStartTime, Date.now(), 100);
+      assert.equal(meta.something, 'something');
+      assert.equal(meta.actionName, 'TEST');
+      assert.equal(meta.asyncType, 'start');
+      // make sure unique id is in the format we expect
+      assert.match(meta.asyncID, /asyncID\d+/);
     });
     it('payload is undefined if no parseStart()`', () => {
       const action = makeTestAction({
@@ -136,14 +139,19 @@ describe('createAsyncMiddleware()', () => {
       }).then(() => {
         const successAction = store.getActions()[1];
         const { meta } = successAction;
-        // user meta
+        // user meta`
         assert.equal(meta.test, 'something');
         assert.equal(meta.test2, 'somethingelse');
         // auto meta
+        assert.equal(meta.actionName, 'TEST');
         assert.equal(meta.resp, 'testing123');
         assert.equal(meta.asyncType, 'success');
-        assert.isNumber(meta.requestTime);
-        assert.isTrue(meta.requestTime > 0);
+        // tough to be exact but make sure start time is a number fairly close to now
+        assert.approximately(meta.requestStartTime, Date.now(), 100);
+        assert.isNumber(meta.requestDuration);
+        assert.isTrue(meta.requestDuration > 0);
+        // make sure unique id is in the format we expect
+        assert.match(meta.asyncID, /asyncID\d+/);
         done();
       });
     });
@@ -199,10 +207,15 @@ describe('createAsyncMiddleware()', () => {
         assert.equal(meta.test, 'something');
         assert.equal(meta.test2, 'somethingelse');
         // auto meta
-        assert.equal(meta.resp, 'testing123');
+        assert.equal(meta.actionName, 'TEST');
         assert.equal(meta.asyncType, 'fail');
-        assert.isNumber(meta.requestTime);
-        assert.isTrue(meta.requestTime > 0);
+        assert.equal(meta.resp, 'testing123');
+        // tough to be exact but make sure start time is a number fairly close to now
+        assert.approximately(meta.requestStartTime, Date.now(), 100);
+        assert.isNumber(meta.requestDuration);
+        assert.isTrue(meta.requestDuration > 0);
+        // make sure unique id is in the format we expect
+        assert.match(meta.asyncID, /asyncID\d+/);
         done();
       });
     });

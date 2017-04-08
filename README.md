@@ -126,7 +126,7 @@ yarn add @nerdwallet/redux-easy-async
 
 ## Advanced Usage
 
-### Track status of requests, show a loading spinner
+### Automatially track request status, show a loading spinner
 
 1.  add a requests reducer that will track all async actions:
 
@@ -139,7 +139,7 @@ yarn add @nerdwallet/redux-easy-async
     // {
     //  FETCH_USER: {
     //    hasPendingRequests: false,
-    //    pendingRequests: 0,
+    //    pendingRequests: [],
     //  }
     // }
     ```
@@ -190,7 +190,8 @@ The examples directory includes fully working examples which you can run locally
 
 ## Motivation
 
-None.
+- http://redux.js.org/docs/advanced/AsyncActions.html
+- loading or not loading should just be a status not a seperate loading action
 
 ## API
 
@@ -359,17 +360,17 @@ const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetc
 //   {
 //    FETCH_POSTS: {
 //      hasPendingRequests: false,
-//      pendingRequests: 0,
+//      pendingRequests: [],
 //   },
 //   {
 //    FETCH_USER: {
 //      hasPendingRequests: false,
-//      pendingRequests: 0,
+//      pendingRequests: [],
 //   }
 //   {
 //    FETCH_COMMENTS: {
 //      hasPendingRequests: false,
-//      pendingRequests: 0,
+//      pendingRequests: [],
 //   }
 // }
 ```

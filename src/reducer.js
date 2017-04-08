@@ -6,7 +6,7 @@ import {
 
 const asyncDefaultState = {
   hasPendingRequests: false,
-  pendingRequests: 0,
+  pendingRequests: [],
 };
 
 /**
@@ -29,12 +29,18 @@ export const createSingleAsyncReducer = (type) => {
 
   return (state = asyncDefaultState, action = {}) => {
     if ([START_TYPE, SUCCESS_TYPE, FAIL_TYPE].indexOf(action.type) > -1) {
-      const pendingRequests = action.type === START_TYPE
-          ? state.pendingRequests + 1
-          : state.pendingRequests - 1;
+      let updatedPendingRequests;
+
+      if (action.type === START_TYPE) {
+        updatedPendingRequests = [...state.pendingRequests, action.meta];
+      } else {
+        updatedPendingRequests = state.pendingRequests.filter(req => (
+          req.asyncID !== action.meta.asyncID
+        ));
+      }
       return {
-        pendingRequests,
-        hasPendingRequests: pendingRequests > 0,
+        pendingRequests: updatedPendingRequests,
+        hasPendingRequests: updatedPendingRequests.length > 0,
       };
     }
     return state;
@@ -77,17 +83,17 @@ export const createSingleAsyncReducer = (type) => {
  * //   {
  * //    FETCH_POSTS: {
  * //      hasPendingRequests: false,
- * //      pendingRequests: 0,
+ * //      pendingRequests: [],
  * //   },
  * //   {
  * //    FETCH_USER: {
  * //      hasPendingRequests: false,
- * //      pendingRequests: 0,
+ * //      pendingRequests: [],
  * //   }
  * //   {
  * //    FETCH_COMMENTS: {
  * //      hasPendingRequests: false,
- * //      pendingRequests: 0,
+ * //      pendingRequests: [],
  * //   }
  * // }
  *
