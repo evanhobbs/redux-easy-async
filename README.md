@@ -219,6 +219,7 @@ const myAction = createAsyncAction('MY_ACTION', () => {
     // function that makes the actual request. Return value must be a promise. In this example
     // `fetch()` returns a promise. **REQUIRED**
     makeRequest: () => fetch('/api/posts'),
+
     // *OPTIONAL*
     // additional meta that will be passed to the start, success, and fail actions if any. All
     // actions will have the following meta:
@@ -232,6 +233,7 @@ const myAction = createAsyncAction('MY_ACTION', () => {
     //     cause the makeRequest promise to be rejected will also get caught here as `resp`
     //     and cause a failed request action.
     meta = {},
+
     // function that takes your redux state and returns true or false whether to proceed with
     // the request. For example: checking if there is already a similar request in progress or
     // the requested data is already cached. *OPTIONAL*
