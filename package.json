@@ -16,19 +16,18 @@
     "babel": "babel src --out-dir dist",
     "build": "yarn run clean && yarn run babel",
     "dev": "yarn run babel -- --watch",
-    "docs:dev": "documentation serve src/index.js --watch",
-    "docs:build": "yarn run docs:api && yarn run docs:toc",
-    "docs:api": "documentation readme src/index.js --section=API",
-    "docs:toc": "markdown-toc -i README.md"
+    "docs": "node build-docs.js"
   },
   "author": "Evan Hobbs <ehobbs@nerdwallet.com>",
   "license": "",
   "dependencies": {
     "chai": "^3.5.0",
     "flux-standard-action": "^1.2.0",
+    "jsdoc-babel": "^0.3.0",
+    "jsdoc-to-markdown": "^3.0.0",
     "lodash": "^4.17.4",
     "markdown-toc": "^1.1.0",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -41,7 +40,6 @@
     "babel-register": "^6.24.0",
     "coveralls": "^2.13.0",
     "cross-env": "^4.0.0",
-    "documentation": "^4.0.0-beta.18",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.1",
     "eslint-plugin-import": "^2.2.0",

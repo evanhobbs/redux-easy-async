@@ -3,6 +3,7 @@ import _ from 'lodash';
  * Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
  * format that {@link createAsyncAction}, {@link createMultipleAsyncReducer}, and
  * {@link createSingleAsyncReducer} accept.
+ * @kind function
  * @param  {string} type - the base name for this constant, e.g. `"GET_USER"`
  * @return {object} returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
  * `FAIL_TYPE`

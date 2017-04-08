@@ -1,0 +1,19 @@
+{
+  "plugins": ["node_modules/jsdoc-babel"],
+  "babel": {
+      "extensions": ["js", "es6", "jsx"]
+  },
+  "tags": {
+      "allowUnknownTags": true,
+      "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+      "cleverLinks": true,
+      "monospaceLinks": true
+  },
+  "opts": {
+      "encoding": "utf8",
+      "private": true,
+      "recurse": true
+  }
+}

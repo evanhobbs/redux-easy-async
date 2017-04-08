@@ -13,6 +13,7 @@ const asyncDefaultState = {
  * Creates a reducer that automatically tracks the status of a SINGLE async actions created with
  * {@link createAsyncAction}. Unless you are only ever going to have one async action you most
  * likely want to use: {@link createMultipleAsyncReducer}.
+ * @kind function
  * @param  {String|Object|Function} type of async action to track. Type can be one of the following:
  * a string (e.g. `"GET_POSTS"``), a constants object created with {@link createAsyncConstants}, or
  * an async action created with {@link createAsyncAction}.
@@ -44,6 +45,7 @@ export const createSingleAsyncReducer = (type) => {
 /**
  * Creates a requests reducer that automatically tracks the status of MULTIPLE async actions created
  * with {@link createAsyncAction}.
+ * @kind function
  * @param  {Array<String|Object|Function>} types an array of async actions to track. Types can be
  * one of the following: a string (e.g. `"GET_POSTS"``), a constants object created with
  * {@link createAsyncConstants}, or an async action created with {@link createAsyncAction}.

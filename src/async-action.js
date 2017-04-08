@@ -19,17 +19,21 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
 
 /**
  *
- * @param  {string|object}   type    can either be a string (e.g. `"GET_POSTS"``) or a
+ * @kind function
+ * @param  {(string|object)} type - can either be a string (e.g. "GET_POSTS") or a
  * a constants object created with {@link createAsyncConstants}.
- * @param  {Function} fn action creator function that returns an object with action configuration.
+ * @param  {Function} fn - action creator function that returns an object with action configuration.
  * See example below for configuration options. Only `makeRequest is required`.
- * @param  {Object}   options [description]
+ * @param  {Object}   [options] additional configuration options
+ * @param  {Object}   [options.middlewareMainType=REDUX_EASY_ASYNC_MAIN_TYPE] the middleware action
+ * type this action will be dispatched with. You most likely don't want to modify this unless for
+ * some reason you want multiple instances of [async middleware]{@link createAsyncMiddleware}.
  * @return {function} actionCreator
  * @example <caption>All configuration options for async action</caption>
  * import { createAsyncAction } from '@nerdwallet/redux-easy-async';
  *
  * const myAction = createAsyncAction('MY_ACTION', () => {
- *   {
+ *   return {
  *     // function that makes the actual request. Return value must be a promise. In this example
  *     // `fetch()` returns a promise. **REQUIRED**
  *     makeRequest: () => fetch('/api/posts'),
@@ -59,8 +63,6 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  *
  * })
  */
-
-
 export const createAsyncAction = (type, fn, options = {}) => {
   const {
     middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,

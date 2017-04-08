@@ -4,10 +4,11 @@ import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
 /**
  * Creates an instance of middleware necessary to handle dispatched async actions created with
  * {@link createAsyncAction}.
+ * @kind function
  * @param  {object} options options to create middleware with.
- * @param {object} [options.requestOptions] options that will be passed to all actions'
+ * @param {object} [options.requestOptions={}] options that will be passed to all action's
  * `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
- * @param  {string} [options.middlewareMainType="REDUX_EASY_ASYNC_MAIN_TYPE"] the action type the
+ * @param  {string} [options.middlewareMainType=REDUX_EASY_ASYNC_MAIN_TYPE] the action type the
  * middleware will listen for. You most likely don't want to modify this unless for some reason
  * you want multiple instances of async middleware.
  *
