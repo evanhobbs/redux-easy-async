@@ -19,7 +19,7 @@ animated gif should be here
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Advanced Usage](#advanced-usage)
-  * [Track status of requests, show a loading spinner](#track-status-of-requests-show-a-loading-spinner)
+  * [Automatially track request status, show a loading spinner](#automatially-track-request-status-show-a-loading-spinner)
 - [Working examples](#working-examples)
 - [Motivation](#motivation)
 - [API](#api)
@@ -219,9 +219,18 @@ const myAction = createAsyncAction('MY_ACTION', () => {
     // function that makes the actual request. Return value must be a promise. In this example
     // `fetch()` returns a promise. **REQUIRED**
     makeRequest: () => fetch('/api/posts'),
-    // additional meta that will be passed to the start, success, and fail actions if any.
-    // meta will have `actionName` and `asyncType`("start", "success", or "fail"). Success and
-    // fail action meta will also have a `requestTime`. *OPTIONAL*
+    // *OPTIONAL*
+    // additional meta that will be passed to the start, success, and fail actions if any. All
+    // actions will have the following meta:
+    //   - `actionName`
+    //   - `asyncType`("start", "success", or "fail")
+    //   - `requestStartTime`
+    //   - `asyncID`: an unique id for each request
+    // Success and fail actions will additionally have:
+    //   - `requestDuration`
+    //   - `resp`: the raw api response. Because of the nature of the promises errors that
+    //     cause the makeRequest promise to be rejected will also get caught here as `resp`
+    //     and cause a failed request action.
     meta = {},
     // function that takes your redux state and returns true or false whether to proceed with
     // the request. For example: checking if there is already a similar request in progress or
@@ -392,3 +401,4 @@ Todo
 -   images/logo
 -   finish Motivation section.
 -   add error logging in middleware?
+-   add more complicated example

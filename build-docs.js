@@ -15,8 +15,7 @@ const updateAPISection = (apiMarkdown) => {
     '\n',
     seperator,
     split[2],
-  ].join(''),
-  );
+  ].join(''));
 };
 
 const updateTOC = () => {

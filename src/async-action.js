@@ -38,9 +38,18 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  *     // `fetch()` returns a promise. **REQUIRED**
  *     makeRequest: () => fetch('/api/posts'),
 
- *     // additional meta that will be passed to the start, success, and fail actions if any.
- *     // meta will have `actionName` and `asyncType`("start", "success", or "fail"). Success and
- *     // fail action meta will also have a `requestTime`. *OPTIONAL*
+ *     // *OPTIONAL*
+ *     // additional meta that will be passed to the start, success, and fail actions if any. All
+ *     // actions will have the following meta:
+ *     //   - `actionName`
+ *     //   - `asyncType`("start", "success", or "fail")
+ *     //   - `requestStartTime`
+ *     //   - `asyncID`: an unique id for each request
+ *     // Success and fail actions will additionally have:
+ *     //   - `requestDuration`
+ *     //   - `resp`: the raw api response. Because of the nature of the promises errors that
+ *     //     cause the makeRequest promise to be rejected will also get caught here as `resp`
+ *     //     and cause a failed request action.
  *     meta = {},
 
  *     // function that takes your redux state and returns true or false whether to proceed with

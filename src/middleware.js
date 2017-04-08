@@ -78,8 +78,8 @@ export const createAsyncMiddleware = (options = {}) => {
         ...meta,
         actionName,
         asyncType: 'start',
-        requestStartTime,
         asyncID,
+        requestStartTime,
       },
     }));
 
@@ -89,11 +89,11 @@ export const createAsyncMiddleware = (options = {}) => {
           // pass the response and actionName as part of the meta
         meta: {
           ...meta,
-          resp,
           actionName,
           asyncType: 'success',
           asyncID,
           requestStartTime,
+          resp,
           requestDuration: Date.now() - requestStartTime,
         },
       })),
@@ -102,11 +102,11 @@ export const createAsyncMiddleware = (options = {}) => {
           // pass the response and actionName as part of the meta
         meta: {
           ...meta,
-          resp,
           actionName,
           asyncType: 'fail',
           asyncID,
           requestStartTime,
+          resp,
           requestDuration: Date.now() - requestStartTime,
         },
       })),
