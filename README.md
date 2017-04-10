@@ -394,7 +394,7 @@ const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetc
 
 ## Meta
 
-Author: [Evan Hobbs](https://github.com/evanhobbs) - [NerdWallet](https:www.nerdwallet.com)
+Author: [Evan Hobbs](https://github.com/evanhobbs) - [NerdWallet](https://www.nerdwallet.com)
 
 License: MIT - `LICENSE` for more information.
 
