@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@nerdwallet/redux-easy-async@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@nerdwallet/redux-easy-async/-/redux-easy-async-0.0.5.tgz#215ccc4bf3494c6fbabf5cdfb85c59bd017d558e"
+"@nerdwallet/redux-easy-async@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@nerdwallet/redux-easy-async/-/redux-easy-async-0.0.7.tgz#e7e68a60eeceee2bbf9b7b46620217e9ea460311"
   dependencies:
     chai "^3.5.0"
     flux-standard-action "^1.2.0"
