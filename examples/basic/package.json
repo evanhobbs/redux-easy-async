@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@nerdwallet/redux-easy-async": "^0.0.7",
+    "json-server": "^0.10.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
@@ -15,7 +16,7 @@
     "react-scripts": "0.9.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js & react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

@@ -10,7 +10,7 @@ export const fetchPost = createAsyncAction(
   (id) => {
     return {
       makeRequest: () => {
-        return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        return fetch(`http://localhost:3001/posts/${id}`)
               .then(response => response.json());
       },
     };
