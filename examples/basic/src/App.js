@@ -1,52 +1,51 @@
+/* eslint-disable react/jsx-no-target-blank */
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { fetchPost, selectNewPost } from './lib/actions';
 import './css/App.css';
 import Post from './components/Post';
 import Arrows from './components/Arrows';
 import Loading from './components/Loading';
 
+const fetchPostIfNeeded = ({ post, onFetchPost, selectedPost, isLoading }) => {
+  if (!post && !isLoading) onFetchPost(selectedPost);
+};
+
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.fetchPostIfNeeded(props);
+    fetchPostIfNeeded(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchPostIfNeeded(nextProps);
-  }
-
-  fetchPostIfNeeded ({ post, fetchPost, selectedPost, isLoading }) {
-    if (!post && !isLoading) fetchPost(selectedPost);
+    fetchPostIfNeeded(nextProps);
   }
 
   render() {
-    const { isLoading, post, selectedPost, selectNewPost } = this.props;
+    const { isLoading, post, selectedPost, onSelectNewPost } = this.props;
     return (
       <div className="App">
         <Arrows
           selectedPost={selectedPost}
-          onSelectNewPost={selectNewPost}
+          onSelectNewPost={onSelectNewPost}
         />
         { isLoading && <Loading /> }
         { post && !isLoading && <Post title={post.title} body={post.body} /> }
-        <p>Fake Online REST API courtesy of: <a target="_blank" href='https://jsonplaceholder.typicode.com/'>JSONPlaceholder</a></p>
+        <p>Fake Online REST API courtesy of: <a target="_blank" href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a></p>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ selectedPost, posts, requests }) => {
-  return {
-    selectedPost,
-    post: posts[selectedPost],
-    isLoading: requests['FETCH_POST'].hasPendingRequests,
-  }
-}
+const mapStateToProps = ({ selectedPost, posts, requests }) => ({
+  selectedPost,
+  post: posts[selectedPost],
+  isLoading: requests.FETCH_POST.hasPendingRequests,
+});
 
 const mapDispatchToProps = dispatch => ({
-  fetchPost: id => dispatch(fetchPost(id)),
-  selectNewPost: id => dispatch(selectNewPost(id)),
-})
+  onFetchPost: id => dispatch(fetchPost(id)),
+  onSelectNewPost: id => dispatch(selectNewPost(id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

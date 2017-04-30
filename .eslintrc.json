@@ -1,8 +1,5 @@
 {
-  "extends": "airbnb-base",
-  "plugins": [
-    "import"
-  ],
+  "extends": "airbnb",
   "rules": {
     "import/prefer-default-export": 0,
     "valid-jsdoc": 2

@@ -1,5 +1,5 @@
 import React from 'react';
- 
+
 export default ({ onSelectNewPost, selectedPost }) => {
   const showPreviousButton = selectedPost > 1;
   return (
@@ -11,7 +11,7 @@ export default ({ onSelectNewPost, selectedPost }) => {
           onClick={() => onSelectNewPost(selectedPost + 1)}
         >
           Show next post
-          <span className="glyphicon glyphicon-chevron-right"></span>
+          <span className="glyphicon glyphicon-chevron-right" />
         </button>
         {
           showPreviousButton &&
@@ -19,12 +19,12 @@ export default ({ onSelectNewPost, selectedPost }) => {
             className="btn btn-default btn-lg btn-block"
             onClick={() => onSelectNewPost(selectedPost - 1)}
           >
-            <span className="glyphicon glyphicon-chevron-left"></span>
+            <span className="glyphicon glyphicon-chevron-left" />
             Show previous post
-          </button> 
+          </button>
         }
-        
+
       </div>
     </div>
-  )
-}
+  );
+};

@@ -7,19 +7,15 @@ export const fetchPost = createAsyncAction(
   'FETCH_POST',
   // action creator function that returns the options for the action. At a minimum it must
   // have a makeRequest method that returns a promise (in this case `fetch()` returns a promise)
-  (id) => {
-    return {
-      makeRequest: () => {
-        return fetch(`http://localhost:3001/posts/${id}`)
-              .then(response => response.json());
-      },
-    };
-  }
+  id => ({
+    makeRequest: () => fetch(`http://localhost:3001/posts/${id}`)
+              .then(response => response.json()),
+  }),
 );
 
-export const selectNewPost = (id) => ({
+export const selectNewPost = id => ({
   type: 'SELECT_POST',
   payload: {
     id,
-  }
+  },
 });
