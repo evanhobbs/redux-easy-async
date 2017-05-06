@@ -1,5 +1,5 @@
 {
-  "name": "@nerdwallet/redux-easy-async",
+  "name": "redux-easy-async",
   "version": "0.0.7",
   "description": "Redux Easy Async makes handling asynchronous actions, such as API requests, simple, reliable, and powerful",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
     "dev": "yarn run babel -- --watch",
     "docs": "node build-docs.js"
   },
-  "author": "Evan Hobbs <ehobbs@nerdwallet.com>",
+  "author": "Evan Hobbs <evanhobbs@gmail.com>",
   "license": "",
   "dependencies": {
     "chai": "^3.5.0",
