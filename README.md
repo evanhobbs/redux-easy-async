@@ -4,6 +4,7 @@
 > simple, reliable, and powerful.
 
 [![Build Status](https://travis-ci.org/evanhobbs/redux-easy-async.svg?branch=master)](https://travis-ci.org/evanhobbs/redux-easy-async)
+[![Coverage Status](https://coveralls.io/repos/github/evanhobbs/redux-easy-async/badge.svg?branch=master)](https://coveralls.io/github/evanhobbs/redux-easy-async?branch=master)
 
 ## Table of Contents
 
