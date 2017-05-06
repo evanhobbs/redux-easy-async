@@ -1,6 +1,6 @@
 {
   "name": "redux-easy-async",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Redux Easy Async makes handling asynchronous actions, such as API requests, simple, reliable, and powerful",
   "main": "dist/index.js",
   "scripts": {
