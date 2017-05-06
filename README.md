@@ -3,6 +3,7 @@
 > Redux Easy Async makes handling asynchronous actions, such as API requests,
 > simple, reliable, and powerful.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66ca27e3eae44e46900c81feb1921c7d)](https://www.codacy.com/app/evanhobbs/redux-easy-async?utm_source=github.com&utm_medium=referral&utm_content=evanhobbs/redux-easy-async&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/evanhobbs/redux-easy-async.svg?branch=master)](https://travis-ci.org/evanhobbs/redux-easy-async)
 [![Coverage Status](https://coveralls.io/repos/github/evanhobbs/redux-easy-async/badge.svg?branch=master)](https://coveralls.io/github/evanhobbs/redux-easy-async?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66ca27e3eae44e46900c81feb1921c7d)](https://www.codacy.com/app/evanhobbs/redux-easy-async?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=evanhobbs/redux-easy-async&amp;utm_campaign=Badge_Grade)
