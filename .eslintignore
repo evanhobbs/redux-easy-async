@@ -10,4 +10,5 @@ npm-debug.log
 
 coverage/*
 
+examples/*
 examples/**/node_modules/*
