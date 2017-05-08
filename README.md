@@ -53,13 +53,13 @@ tracking asynchronous actions. Features:
 With NPM:
 
 ```sh
-npm install @nerdwallet/redux-easy-async --save
+npm install redux-easy-async --save
 ```
 
 or with Yarn:
 
 ```sh
-yarn add @nerdwallet/redux-easy-async
+yarn add redux-easy-async
 ```
 
 ## Basic Usage
@@ -70,7 +70,7 @@ yarn add @nerdwallet/redux-easy-async
     // assuming have created and imported a root reducer:
     // e.g. import rootReducer from './reducers';
     import { createStore, applyMiddleware } from 'redux';
-    import { createAsyncMiddleware } from '@nerdwallet/redux-easy-async';
+    import { createAsyncMiddleware } from 'redux-easy-async';
 
     const asyncMiddleware = createAsyncMiddleware();
     createStore(rootReducer, applyMiddleware(asyncMiddleware));
@@ -79,7 +79,7 @@ yarn add @nerdwallet/redux-easy-async
 2.  Create an async action:
 
     ```javascript
-    import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+    import { createAsyncAction } from 'redux-easy-async';
 
     export const fetchUser = createAsyncAction('FETCH_USER', (id) => {
       return {
@@ -127,7 +127,7 @@ yarn add @nerdwallet/redux-easy-async
 1.  add a requests reducer that will track all async actions:
 
     ```javascript
-    import { createMultipleAsyncReducer } from '@nerdwallet/redux-easy-async';
+    import { createMultipleAsyncReducer } from 'redux-easy-async';
     // createMultipleAsyncReducer takes an array of async actions and returns
     // a reducer that tracks them
     const requestsReducer = createMultipleAsyncReducer([fetchPost]);
@@ -208,7 +208,7 @@ The examples directory includes fully working examples which you can run locally
 
 **Example** *(All configuration options for async action)*  
 ```js
-import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+import { createAsyncAction } from 'redux-easy-async';
 
 const myAction = createAsyncAction('MY_ACTION', () => {
   return {
@@ -342,7 +342,7 @@ with [createAsyncAction](#createAsyncAction).
 
 **Example**  
 ```js
-import { createAsyncAction, createAsyncConstants } from '@nerdwallet/redux-easy-async';
+import { createAsyncAction, createAsyncConstants } from 'redux-easy-async';
 
 // Types can async action, constants object, or string:
 

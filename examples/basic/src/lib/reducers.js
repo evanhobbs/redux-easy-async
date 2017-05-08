@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { createMultipleAsyncReducer } from '@nerdwallet/redux-easy-async';
+import { createMultipleAsyncReducer } from 'redux-easy-async';
 import { fetchPost } from './actions';
 
 const selectedPost = (state = 1, { type, payload }) => {

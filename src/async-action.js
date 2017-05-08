@@ -30,7 +30,7 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  * some reason you want multiple instances of [async middleware]{@link createAsyncMiddleware}.
  * @return {function} actionCreator
  * @example <caption>All configuration options for async action</caption>
- * import { createAsyncAction } from '@nerdwallet/redux-easy-async';
+ * import { createAsyncAction } from 'redux-easy-async';
  *
  * const myAction = createAsyncAction('MY_ACTION', () => {
  *   return {

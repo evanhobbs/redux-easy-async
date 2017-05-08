@@ -58,7 +58,7 @@ export const createSingleAsyncReducer = (type) => {
  * @return {function}       Redux reducer
  *
  * @example
- * import { createAsyncAction, createAsyncConstants } from '@nerdwallet/redux-easy-async';
+ * import { createAsyncAction, createAsyncConstants } from '`redux-easy-async';
  *
  * // Types can async action, constants object, or string:
  *
