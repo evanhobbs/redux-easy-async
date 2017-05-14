@@ -1,8 +1,10 @@
 import _ from 'lodash';
 /**
  * Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
- * format that {@link createAsyncAction}, {@link createMultipleAsyncReducer}, and
- * {@link createSingleAsyncReducer} accept.
+ * format that {@link createAsyncAction}, {@link createAsyncReducer}, and
+ * {@link createAsyncReducer} accept. **Note:** this is an extra optional step for those that
+ * prefer to separate action creator definitions from constants. If you don't know why or care then
+ * skip this and use only {@link createSingleAsyncAction} to create your actions.
  * @kind function
  * @param  {string} type - the base name for this constant, e.g. `"GET_USER"`
  * @return {object} returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and

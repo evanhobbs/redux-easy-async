@@ -22,8 +22,7 @@
   * [createAsyncAction(type, fn, [options]) ⇒ function](#createasyncactiontype-fn-options--function)
   * [createAsyncConstants(type) ⇒ object](#createasyncconstantstype--object)
   * [createAsyncMiddleware(options) ⇒ function](#createasyncmiddlewareoptions--function)
-  * [createSingleAsyncReducer(type) ⇒ function](#createsingleasyncreducertype--function)
-  * [createMultipleAsyncReducer(types) ⇒ function](#createmultipleasyncreducertypes--function)
+  * [createAsyncReducer(types) ⇒ function](#createasyncreducertypes--function)
 - [Meta](#meta)
 
 <!-- tocstop -->
@@ -127,10 +126,10 @@ yarn add redux-easy-async
 1.  add a requests reducer that will track all async actions:
 
     ```javascript
-    import { createMultipleAsyncReducer } from 'redux-easy-async';
-    // createMultipleAsyncReducer takes an array of async actions and returns
+    import { createAsyncReducer } from 'redux-easy-async';
+    // createAsyncReducer takes an array of async actions and returns
     // a reducer that tracks them
-    const requestsReducer = createMultipleAsyncReducer([fetchPost]);
+    const requestsReducer = createAsyncReducer([fetchPost]);
     // now you have a reducer with keys for each each action passed to it
     // {
     //  FETCH_USER: {
@@ -204,7 +203,7 @@ The examples directory includes fully working examples which you can run locally
 | type | <code>string</code> \| <code>object</code> |  | can either be a string (e.g. "GET_POSTS") or a a constants object created with [createAsyncConstants](#createAsyncConstants). |
 | fn | <code>function</code> |  | action creator function that returns an object with action configuration. See example below for configuration options. Only `makeRequest is required`. |
 | [options] | <code>Object</code> |  | additional configuration options |
-| [options.middlewareMainType] | <code>Object</code> | <code>REDUX_EASY_ASYNC_MAIN_TYPE</code> | the middleware action type this action will be dispatched with. You most likely don't want to modify this unless for some reason you want multiple instances of [async middleware](#createAsyncMiddleware). |
+| [options.namespace] | <code>Object</code> | <code>REDUX_EASY_ASYNC_NAMESPACE</code> | the middleware action type this action will be dispatched with. You most likely don't want to modify this unless for some reason you want multiple instances of [async middleware](#createAsyncMiddleware). |
 
 **Example** *(All configuration options for async action)*  
 ```js
@@ -257,8 +256,10 @@ const myAction = createAsyncAction('MY_ACTION', () => {
 
 ### createAsyncConstants(type) ⇒ <code>object</code>
 Creates an object with constant keys `NAME`, `START_TYPE`, `SUCCESS_TYPE`, `FAIL_TYPE` in the
-format that [createAsyncAction](#createAsyncAction), [createMultipleAsyncReducer](#createMultipleAsyncReducer), and
-[createSingleAsyncReducer](#createSingleAsyncReducer) accept.
+format that [createAsyncAction](#createAsyncAction), [createAsyncReducer](#createAsyncReducer), and
+[createAsyncReducer](#createAsyncReducer) accept. **Note:** this is an extra optional step for those that
+prefer to separate action creator definitions from constants. If you don't know/case then just
+[createSingleAsyncAction](createSingleAsyncAction).
 
 **Kind**: global function  
 **Returns**: <code>object</code> - returns an object with keys: `NAME`, `START_TYPE`, `SUCCESS_TYPE`, and
@@ -294,7 +295,7 @@ Creates an instance of middleware necessary to handle dispatched async actions c
 | --- | --- | --- | --- |
 | options | <code>object</code> |  | options to create middleware with. |
 | [options.requestOptions] | <code>object</code> | <code>{}</code> | options that will be passed to all action's `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`. |
-| [options.middlewareMainType] | <code>string</code> | <code>&quot;REDUX_EASY_ASYNC_MAIN_TYPE&quot;</code> | the action type the middleware will listen for. You most likely don't want to modify this unless for some reason you want multiple instances of async middleware. |
+| [options.namespace] | <code>string</code> | <code>&quot;REDUX_EASY_ASYNC_NAMESPACE&quot;</code> | the action type the middleware will listen for. You most likely don't want to modify this unless for some reason you want multiple instances of async middleware. |
 
 **Example**  
 ```js
@@ -310,39 +311,24 @@ const asyncMiddleware = createAsyncMiddleware();
 
 * * *
 
-<a name="createSingleAsyncReducer"></a>
+<a name="createAsyncReducer"></a>
 
-### createSingleAsyncReducer(type) ⇒ <code>function</code>
-Creates a reducer that automatically tracks the status of a SINGLE async actions created with
-[createAsyncAction](#createAsyncAction). Unless you are only ever going to have one async action you most
-likely want to use: [createMultipleAsyncReducer](#createMultipleAsyncReducer).
+### createAsyncReducer(types) ⇒ <code>function</code>
+Creates a requests reducer that automatically tracks the status of one or more async actions
+created with [createAsyncAction](#createAsyncAction). As you dispatch async actions this reducer will
+automatically update with number of requests, request meta for each, a boolean for whether any
+requests are currently pending for this request.
 
 **Kind**: global function  
-**Returns**: <code>function</code> - Redux reducer.  
+**Returns**: <code>function</code> - Redux reducer automatically tracking the async action(s)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| type | <code>String</code> \| <code>Object</code> \| <code>function</code> | of async action to track. Type can be one of the following: a string (e.g. `"GET_POSTS"``), a constants object created with [createAsyncConstants](#createAsyncConstants), or an async action created with [createAsyncAction](#createAsyncAction). |
-
-
-* * *
-
-<a name="createMultipleAsyncReducer"></a>
-
-### createMultipleAsyncReducer(types) ⇒ <code>function</code>
-Creates a requests reducer that automatically tracks the status of MULTIPLE async actions created
-with [createAsyncAction](#createAsyncAction).
-
-**Kind**: global function  
-**Returns**: <code>function</code> - Redux reducer  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| types | <code>Array.&lt;(String\|Object\|function())&gt;</code> | an array of async actions to track. Types can be one of the following: a string (e.g. `"GET_POSTS"``), a constants object created with [createAsyncConstants](#createAsyncConstants), or an async action created with [createAsyncAction](#createAsyncAction). |
+| types | <code>Array</code> \| <code>String</code> \| <code>Object</code> \| <code>function</code> | one or more async actions to track. Either a single instance or an array of one or more of the following: a string (e.g. `"GET_POSTS"``), a constants object created with [createAsyncConstants](#createAsyncConstants), or an async action created with [createAsyncAction](#createAsyncAction). Typically you will want to pass an array of actions to track all async actions for your application in one place. |
 
 **Example**  
 ```js
-import { createAsyncAction, createAsyncConstants } from 'redux-easy-async';
+import { createAsyncAction, createAsyncConstants } from '`redux-easy-async';
 
 // Types can async action, constants object, or string:
 
@@ -359,10 +345,11 @@ export const fetchUser = createAsyncAction('FETCH_USER', (id) => {
 // async constant
 const fetchComments = createAsyncConstants('FETCH_COMMENTS');
 
-const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetchComments]);
+// now we can create a reducer from the action or constants we've defined
+const requestsReducer = createAsyncReducer([FETCH_POSTS, fetchUser, fetchComments]);
 
 // Now `requestsReducer` is reducer that automatically tracks each of the asynchronous action
-// types.
+// types. It's state looks something like this to start:
 // {
 //   {
 //    FETCH_POSTS: {

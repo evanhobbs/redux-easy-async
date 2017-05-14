@@ -4,7 +4,7 @@ import { createAsyncMiddleware } from '../src/middleware';
 import { createAction } from '../src/action';
 
 const makeTestAction = args => ({
-  type: 'REDUX_EASY_ASYNC_MAIN_TYPE',
+  type: 'REDUX_EASY_ASYNC_NAMESPACE',
   actionName: 'TEST',
   startActionCreator: createAction('TEST_START'),
   successActionCreator: createAction('TEST_SUCCESS'),

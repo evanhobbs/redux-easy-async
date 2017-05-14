@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { createMultipleAsyncReducer } from 'redux-easy-async';
+import { createAsyncReducer } from 'redux-easy-async';
 import { fetchPost } from './actions';
 
 const selectedPost = (state = 1, { type, payload }) => {
@@ -21,7 +21,7 @@ const posts = (state = {}, { type, payload }) => {
 
 // creates a reducer that will automatically track requests -- in this case just fetchPost
 // note: this must be an array
-const requestsReducer = createMultipleAsyncReducer([fetchPost]);
+const requestsReducer = createAsyncReducer([fetchPost]);
 
 export default combineReducers({
   selectedPost,

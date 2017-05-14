@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
+import { REDUX_EASY_ASYNC_NAMESPACE } from './lib/constants';
 
 /**
  * Creates an instance of middleware necessary to handle dispatched async actions created with
@@ -8,7 +8,7 @@ import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
  * @param  {object} options options to create middleware with.
  * @param {object} [options.requestOptions={}] options that will be passed to all action's
  * `makeRequest` functions: e.g. `makeRequest(state, requestOptions)`.
- * @param  {string} [options.middlewareMainType=REDUX_EASY_ASYNC_MAIN_TYPE] the action type the
+ * @param  {string} [options.namespace=REDUX_EASY_ASYNC_NAMESPACE] the action type the
  * middleware will listen for. You most likely don't want to modify this unless for some reason
  * you want multiple instances of async middleware.
  *
@@ -26,14 +26,14 @@ import { REDUX_EASY_ASYNC_MAIN_TYPE } from './lib/constants';
  */
 export const createAsyncMiddleware = (options = {}) => {
   const {
-    middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,
+    namespace = REDUX_EASY_ASYNC_NAMESPACE,
     requestOptions,
   } = options;
 
   // Return Redux middleware
   return ({ dispatch, getState }) => next => (action) => {
     // Normal action: pass it on
-    if (action.type !== middlewareMainType) return next(action);
+    if (action.type !== namespace) return next(action);
 
     // configuration option defaults
     const {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { getOrCreateAsyncConstants } from './async-constants';
-import { REDUX_EASY_ASYNC_MAIN_TYPE, ERRORS } from './lib/constants';
+import { REDUX_EASY_ASYNC_NAMESPACE, ERRORS } from './lib/constants';
 import { createAction } from './action';
 
 const decorateActionCreator = (actionCreator, asyncConstants) => {
@@ -25,7 +25,7 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  * @param  {Function} fn - action creator function that returns an object with action configuration.
  * See example below for configuration options. Only `makeRequest is required`.
  * @param  {Object}   [options] additional configuration options
- * @param  {Object}   [options.middlewareMainType=REDUX_EASY_ASYNC_MAIN_TYPE] the middleware action
+ * @param  {Object}   [options.namespace=REDUX_EASY_ASYNC_NAMESPACE] the middleware action
  * type this action will be dispatched with. You most likely don't want to modify this unless for
  * some reason you want multiple instances of [async middleware]{@link createAsyncMiddleware}.
  * @return {function} actionCreator
@@ -74,7 +74,7 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  */
 export const createAsyncAction = (type, fn, options = {}) => {
   const {
-    middlewareMainType = REDUX_EASY_ASYNC_MAIN_TYPE,
+    namespace = REDUX_EASY_ASYNC_NAMESPACE,
   } = options;
 
   const asyncConstants = getOrCreateAsyncConstants(type);
@@ -91,7 +91,7 @@ export const createAsyncAction = (type, fn, options = {}) => {
       throw new Error(ERRORS.MAKE_REQUEST_NOT_FUNCTION);
     }
     return {
-      type: middlewareMainType,
+      type: namespace,
       ...action,
       actionName: actionCreator.actionName,
       startActionCreator: actionCreator.start,

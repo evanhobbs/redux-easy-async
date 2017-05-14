@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { createMultipleAsyncReducer } from '../src/reducer';
+import { createAsyncReducer } from '../src/reducer';
 import { createAsyncAction } from '../src/async-action';
 import { createAsyncConstants } from '../src/async-constants';
 
@@ -94,7 +94,7 @@ export const runCombinedReducerTests = (asyncConstantType) => {
     };
 
 
-    const reducer = createMultipleAsyncReducer(types);
+    const reducer = createAsyncReducer(types);
 
     state = reducer(state, { type: 'START_TEST', meta: { asyncID: 1 } });
     assertState(state.TEST, true, 1);

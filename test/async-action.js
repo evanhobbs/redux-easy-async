@@ -47,13 +47,13 @@ describe('Async Actions', () => {
       const fn = createAsyncAction('TEST', () => ({
         makeRequest: () => {},
       }));
-      assert.equal(fn().type, 'REDUX_EASY_ASYNC_MAIN_TYPE');
+      assert.equal(fn().type, 'REDUX_EASY_ASYNC_NAMESPACE');
     });
     it('action creator can have a custom middleware main type', () => {
       const fn = createAsyncAction('TEST', () => ({
         makeRequest: () => {},
       }), {
-        middlewareMainType: 'MAIN_TEST_TYPE',
+        namespace: 'MAIN_TEST_TYPE',
       });
       assert.equal(fn().type, 'MAIN_TEST_TYPE');
     });
@@ -83,7 +83,7 @@ describe('Async Actions', () => {
       const action = fn();
 
       // auto generated attributes
-      assert.propertyVal(action, 'type', 'REDUX_EASY_ASYNC_MAIN_TYPE');
+      assert.propertyVal(action, 'type', 'REDUX_EASY_ASYNC_NAMESPACE');
       assert.propertyVal(action, 'actionName', 'TEST');
       assert.propertyVal(action, 'startActionCreator', fn.start);
       assert.propertyVal(action, 'successActionCreator', fn.success);

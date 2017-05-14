@@ -9,20 +9,10 @@ const asyncDefaultState = {
   pendingRequests: [],
 };
 
-/**
- * Creates a reducer that automatically tracks the status of a SINGLE async actions created with
- * {@link createAsyncAction}. Unless you are only ever going to have one async action you most
- * likely want to use: {@link createMultipleAsyncReducer}.
- * @kind function
- * @param  {String|Object|Function} type of async action to track. Type can be one of the following:
- * a string (e.g. `"GET_POSTS"``), a constants object created with {@link createAsyncConstants}, or
- * an async action created with {@link createAsyncAction}.
- * @return {function}      Redux reducer.
- */
-export const createSingleAsyncReducer = (type) => {
+const createSingleAsyncReducer = (type) => {
   const asyncConstants = getOrCreateAsyncConstants(type);
   if (!asyncConstants) {
-    throw new Error(`createSingleAsyncReducer(type): ${ERRORS.ASYNC_TYPE_NOT_VALID}`);
+    throw new Error(ERRORS.CREATE_ASYNC_REDUCER_INVALID_TYPE);
   }
 
   const { START_TYPE, SUCCESS_TYPE, FAIL_TYPE } = asyncConstants;
@@ -49,13 +39,17 @@ export const createSingleAsyncReducer = (type) => {
 
 
 /**
- * Creates a requests reducer that automatically tracks the status of MULTIPLE async actions created
- * with {@link createAsyncAction}.
+ * Creates a requests reducer that automatically tracks the status of one or more async actions
+ * created with {@link createAsyncAction}. As you dispatch async actions this reducer will
+ * automatically update with number of requests, request meta for each, a boolean for whether any
+ * requests are currently pending for this request.
  * @kind function
- * @param  {Array<String|Object|Function>} types an array of async actions to track. Types can be
- * one of the following: a string (e.g. `"GET_POSTS"``), a constants object created with
- * {@link createAsyncConstants}, or an async action created with {@link createAsyncAction}.
- * @return {function}       Redux reducer
+ * @param  {Array|String|Object|Function} types - one or more async actions to track. Either a
+ * single instance or an array of one or more of the following: a string (e.g. `"GET_POSTS"``), a
+ * constants object created with {@link createAsyncConstants}, or an async action created with
+ * {@link createAsyncAction}. Typically you will want to pass an array of actions to track all
+ * async actions for your application in one place.
+ * @return {function}       Redux reducer automatically tracking the async action(s)
  *
  * @example
  * import { createAsyncAction, createAsyncConstants } from '`redux-easy-async';
@@ -75,10 +69,11 @@ export const createSingleAsyncReducer = (type) => {
  * // async constant
  * const fetchComments = createAsyncConstants('FETCH_COMMENTS');
  *
- * const requestsReducer = createMultipleAsyncReducer([FETCH_POSTS, fetchUser, fetchComments]);
+ * // now we can create a reducer from the action or constants we've defined
+ * const requestsReducer = createAsyncReducer([FETCH_POSTS, fetchUser, fetchComments]);
  *
  * // Now `requestsReducer` is reducer that automatically tracks each of the asynchronous action
- * // types.
+ * // types. It's state looks something like this to start:
  * // {
  * //   {
  * //    FETCH_POSTS: {
@@ -98,15 +93,17 @@ export const createSingleAsyncReducer = (type) => {
  * // }
  *
  */
-export const createMultipleAsyncReducer = (types) => {
-  if (!Array.isArray(types)) throw new Error(ERRORS.REDUCER_TYPES_NOT_VALID);
-  const reducers = types.reduce((acc, type) => {
-    const asyncConstants = getOrCreateAsyncConstants(type);
-    if (asyncConstants) {
-      // eslint-disable-next-line no-param-reassign
-      acc[asyncConstants.NAME] = createSingleAsyncReducer(type);
-    }
-    return acc;
-  }, {});
-  return combineReducers(reducers);
+export const createAsyncReducer = (types) => {
+  if (Array.isArray(types)) {
+    const reducers = types.reduce((acc, type) => {
+      const asyncConstants = getOrCreateAsyncConstants(type);
+      if (asyncConstants) {
+        // eslint-disable-next-line no-param-reassign
+        acc[asyncConstants.NAME] = createSingleAsyncReducer(type);
+      }
+      return acc;
+    }, {});
+    return combineReducers(reducers);
+  }
+  return createSingleAsyncReducer(types);
 };
