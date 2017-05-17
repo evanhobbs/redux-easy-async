@@ -1,6 +1,6 @@
 {
   "name": "redux-easy-async",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Redux Easy Async makes handling asynchronous actions, such as API requests, simple, reliable, and powerful",
   "main": "dist/index.js",
   "scripts": {
@@ -20,7 +20,11 @@
     "docs": "node build-docs.js"
   },
   "author": "Evan Hobbs <evanhobbs@gmail.com>",
-  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evanhobbs/redux-easy-async"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
     "chai": "^3.5.0",
     "flux-standard-action": "^1.2.0",
