@@ -66,7 +66,7 @@ describe('Async Actions', () => {
     it('action creator returns an action with all correct attributes', () => {
       const makeRequest = () => {};
       const meta = {};
-      const args = [{ test: 'test' }, 'args'];
+      const actionCreatorArgs = [{ test: 'test' }, 'args'];
       const shouldMakeRequest = () => true;
       const parseStart = () => null;
       const parseSuccess = resp => resp;
@@ -81,7 +81,7 @@ describe('Async Actions', () => {
         parseFail,
       }));
 
-      const action = fn(...args);
+      const action = fn(...actionCreatorArgs);
 
       // auto generated attributes
       assert.propertyVal(action, 'type', 'REDUX_EASY_ASYNC_NAMESPACE');
@@ -97,7 +97,7 @@ describe('Async Actions', () => {
       assert.propertyVal(action, 'parseStart', parseStart);
       assert.propertyVal(action, 'parseSuccess', parseSuccess);
       assert.propertyVal(action, 'parseFail', parseFail);
-      assert.deepEqual(action.args, args);
+      assert.deepEqual(action.actionCreatorArgs, actionCreatorArgs);
     });
     it('throws error if action creator does not return an object with a makeRequest function', () => {
       let fn = createAsyncAction('TEST', () => {});

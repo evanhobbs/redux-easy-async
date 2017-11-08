@@ -93,7 +93,7 @@ export const createAsyncAction = (type, fn, options = {}) => {
     return {
       type: namespace,
       ...action,
-      args,
+      actionCreatorArgs: args,
       actionName: actionCreator.actionName,
       startActionCreator: actionCreator.start,
       successActionCreator: actionCreator.success,
