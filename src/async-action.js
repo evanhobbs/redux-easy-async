@@ -50,24 +50,24 @@ const decorateActionCreator = (actionCreator, asyncConstants) => {
  *     //   - `resp`: the raw api response. Because of the nature of the promises errors that
  *     //     cause the makeRequest promise to be rejected will also get caught here as `resp`
  *     //     and cause a failed request action.
- *     meta = {},
+ *     meta: {},
  *
  *     // function that takes your redux state and returns true or false whether to proceed with
  *     // the request. For example: checking if there is already a similar request in progress or
  *     // the requested data is already cached. *OPTIONAL*
- *     shouldMakeRequest = (state) => true,
+ *     shouldMakeRequest: (state) => true,
  *
- *     // `parseStart`, `parseSuccess`, and `parseSuccess` can be useful if you want to modify
+ *     // `parseStart`, `parseSuccess`, and `parseFail` can be useful if you want to modify
  *     // raw API responses, errors, etc. before passing them to your reducer. The return value
  *     // of each becomes the payload for start, success, and fail actions. By default response
  *     // will not be modified.
  *     //
  *     // the return value of `parseStart` becomes the payload for the start action. *OPTIONAL*
- *     parseStart = () => null,
+ *     parseStart: () => null,
  *     // the return value of `parseSuccess` becomes the payload for the success action. *OPTIONAL*
- *     parseSuccess = resp => resp,
+ *     parseSuccess: resp => resp,
  *     // the return value of `parseFail` becomes the payload for the fail action. *OPTIONAL*
- *     parseFail = resp => resp,
+ *     parseFail: resp => resp,
  *   }
  *
  * })
@@ -93,6 +93,7 @@ export const createAsyncAction = (type, fn, options = {}) => {
     return {
       type: namespace,
       ...action,
+      actionCreatorArgs: args,
       actionName: actionCreator.actionName,
       startActionCreator: actionCreator.start,
       successActionCreator: actionCreator.success,

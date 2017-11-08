@@ -48,6 +48,8 @@ export const createAsyncMiddleware = (options = {}) => {
       makeRequest,
       // additional meta that will be passed to the action if any - must be an object
       meta = {},
+      // arguments passed to the action when it was invoked.
+      actionCreatorArgs = {},
       // function that returns boolean for whether to proceed with the request.
       shouldMakeRequest = () => true,
       // on start the result of parse() is passed as the payload of the start action
@@ -77,6 +79,7 @@ export const createAsyncMiddleware = (options = {}) => {
       meta: {
         ...meta,
         actionName,
+        actionCreatorArgs,
         asyncType: 'start',
         asyncID,
         requestStartTime,
@@ -90,6 +93,7 @@ export const createAsyncMiddleware = (options = {}) => {
         meta: {
           ...meta,
           actionName,
+          actionCreatorArgs,
           asyncType: 'success',
           asyncID,
           requestStartTime,
@@ -103,6 +107,7 @@ export const createAsyncMiddleware = (options = {}) => {
         meta: {
           ...meta,
           actionName,
+          actionCreatorArgs,
           asyncType: 'fail',
           asyncID,
           requestStartTime,
