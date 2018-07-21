@@ -25,7 +25,7 @@ const createSingleAsyncReducer = (type) => {
       if (action.type === START_TYPE) {
         updatedPendingRequests = [
           ...state.pendingRequests,
-          // store the meta but omit `actionCreatorArgs` as they may not be serializable
+          // store the meta but omit `actionCreatorArgs` as they may be large or not serializable
           _.omit(action.meta, 'actionCreatorArgs'),
         ];
       } else {
