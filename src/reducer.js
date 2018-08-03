@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import _ from 'lodash';
 import { getOrCreateAsyncConstants } from './async-constants';
 import {
   ERRORS,
@@ -22,7 +23,11 @@ const createSingleAsyncReducer = (type) => {
       let updatedPendingRequests;
 
       if (action.type === START_TYPE) {
-        updatedPendingRequests = [...state.pendingRequests, action.meta];
+        updatedPendingRequests = [
+          ...state.pendingRequests,
+          // store the meta but omit `actionCreatorArgs` as they may be large or not serializable
+          _.omit(action.meta, 'actionCreatorArgs'),
+        ];
       } else {
         updatedPendingRequests = state.pendingRequests.filter(req => (
           req.asyncID !== action.meta.asyncID
