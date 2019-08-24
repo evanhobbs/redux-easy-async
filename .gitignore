@@ -32,3 +32,5 @@ jspm_packages
 
 # dist
 dist
+
+package-lock.json
